@@ -12,7 +12,7 @@ const routes: Routes = [
   {
     path: 'games/:id',
     component: GameComponent,
-  }
+  },
 ];
 
 @NgModule({

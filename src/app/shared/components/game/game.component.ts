@@ -13,33 +13,36 @@ import {GameService} from "../../../core/services/game.service";
 export class GameComponent implements OnInit, OnDestroy {
 
   game: Game;
-  id: string;
+  id: number;
   destroy$ = new Subject();
 
   constructor(
     private gameService: GameService,
     private activatedRoute: ActivatedRoute
   ) {
+
   }
 
   ngOnInit() {
     this.activatedRoute.params
       .pipe(takeUntil(this.destroy$))
       .subscribe(params => {
-        this.id = params.id;
-      });
-
-    this.gameService
-      .getGameById(this.id)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(value => {
-        this.game = value;
-        console.log(this.game);
+        this.id = +params.id;
+        this.changeCurrentGame();
       });
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
+  }
+
+  private changeCurrentGame() {
+    this.gameService.games$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(games => {
+        this.game = games[this.id - 1];
+        console.log(this.game);
+      });
   }
 
 }

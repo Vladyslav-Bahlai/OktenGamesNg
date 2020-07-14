@@ -1,14 +1,14 @@
 <div>
   <h1>game info:</h1>
-  <p>id: {{ game.id }}</p>
-  <p>title: {{ game.title }}</p>
-  <p>amount: {{ game.amount }}</p>
-  <p>price: {{ game.price }}</p>
-  <p>score: {{ game.score }}</p>
-  <p>imgUrl: {{ game.imgUrl }}</p>
-  <p>description: {{ game.description }}</p>
-  <p>releaseDate: {{ game.releaseDate }}</p>
-  <p>company: {{ game.company }}</p>
+  <p>id: {{ game?.id }}</p>
+  <p>title: {{ game?.title }}</p>
+  <p>amount: {{ game?.amount }}</p>
+  <p>price: {{ game?.price }}</p>
+  <p>score: {{ game?.score }}</p>
+  <p>imgUrl: {{ game?.imgUrl }}</p>
+  <p>description: {{ game?.description }}</p>
+  <p>releaseDate: {{ game?.releaseDate }}</p>
+  <p>company: {{ game?.company }}</p>
 
   <!--<h3>screenShotsImgUrl:</h3>-->
   <!--<div *ngFor="let url of game.screenShotsImgUrl">-->
@@ -27,9 +27,10 @@
 
   <h3>additionalContent:</h3>
   <div *ngFor="let game of game?.additionalContent">
-    <p [routerLink]="[game.id]">{{ game.title }}</p>
+    <p [routerLink]="['/games/', game?.id]">{{ game?.title }}</p>
   </div>
 
-  <p>mainGame: {{ game.mainGame }}</p>
+  <h3>mainGame:</h3>
+  <p [routerLink]="['/games/', game.mainGame.id]">{{ game?.mainGame }}</p>
 
 </div>

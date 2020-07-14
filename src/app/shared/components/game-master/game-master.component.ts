@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {GameService} from '../../../core/services/game.service';
 import {Game} from '../../../core/models/game';
 import {Subject} from "rxjs";
-import {takeUntil} from "rxjs/operators";
 
 @Component({
   selector: 'app-game-master',
@@ -15,15 +14,12 @@ export class GameMasterComponent implements OnInit, OnDestroy {
   destroy$ = new Subject();
 
   constructor(private gameService: GameService) {
-    this.gameService.getAllGames()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(values => {
-        console.log(values);
-        this.gamesList = values;
-      });
   }
 
   ngOnInit() {
+    // is there a way to automate this method call ????
+    this.gamesList = this.gameService.games;
+    // console.log(this.gamesList);
   }
 
   ngOnDestroy(): void {
