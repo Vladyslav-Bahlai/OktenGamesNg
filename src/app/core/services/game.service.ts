@@ -9,7 +9,6 @@ import {Game} from "../models/game";
 export class GameService {
 
   constructor(private httpClient: HttpClient) {
-
   }
 
   getAllGames(): Observable<Game[]> {
