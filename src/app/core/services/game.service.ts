@@ -7,7 +7,7 @@ import {Game} from "../models/game";
   providedIn: 'root'
 })
 export class GameService {
-  
+
   constructor(private httpClient: HttpClient) {
 
   }

@@ -29,13 +29,10 @@ export class GameComponent implements OnInit, OnDestroy {
         this.id = params.id;
       });
 
-    this.gameService
-      .getGameById(this.id)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(value => {
-        this.game = value;
-        console.log(this.game);
-      });
+    console.log(this.id);
+
+    this.game = this.activatedRoute.snapshot.data.games[this.id];
+    console.log(this.game);
   }
 
   ngOnDestroy(): void {
