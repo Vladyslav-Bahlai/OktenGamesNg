@@ -1,0 +1,35 @@
+<div>
+  <h1>game info:</h1>
+  <p>id: {{ game.id }}</p>
+  <p>title: {{ game.title }}</p>
+  <p>amount: {{ game.amount }}</p>
+  <p>price: {{ game.price }}</p>
+  <p>score: {{ game.score }}</p>
+  <p>imgUrl: {{ game.imgUrl }}</p>
+  <p>description: {{ game.description }}</p>
+  <p>releaseDate: {{ game.releaseDate }}</p>
+  <p>company: {{ game.company }}</p>
+
+  <!--<h3>screenShotsImgUrl:</h3>-->
+  <!--<div *ngFor="let url of game.screenShotsImgUrl">-->
+    <!--<p>{{ url }}</p>-->
+  <!--</div>-->
+
+  <h3>genres:</h3>
+  <div *ngFor="let genre of game?.genres">
+    <p>{{ genre }}</p>
+  </div>
+
+  <h3>platforms:</h3>
+  <div *ngFor="let platform of game?.platforms">
+    <p>{{ platform }}</p>
+  </div>
+
+  <h3>additionalContent:</h3>
+  <div *ngFor="let game of game?.additionalContent">
+    <p [routerLink]="[game.id]">{{ game.title }}</p>
+  </div>
+
+  <p>mainGame: {{ game.mainGame }}</p>
+
+</div>
