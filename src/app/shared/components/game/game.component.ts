@@ -13,7 +13,7 @@ import {GameService} from "../../../core/services/game.service";
 export class GameComponent implements OnInit, OnDestroy {
 
   game: Game;
-  id: string;
+  id: number;
   destroy$ = new Subject();
 
   constructor(
@@ -26,12 +26,9 @@ export class GameComponent implements OnInit, OnDestroy {
     this.activatedRoute.params
       .pipe(takeUntil(this.destroy$))
       .subscribe(params => {
-        this.id = params.id;
+        this.id = +params.id;
       });
-
-    console.log(this.id);
-
-    this.game = this.activatedRoute.snapshot.data.games[this.id];
+    this.game = this.activatedRoute.snapshot.data.games[this.id - 1];
     console.log(this.game);
   }
 
