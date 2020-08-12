@@ -7,18 +7,22 @@ import {CoreModule} from './core/core.module';
 import {GameMasterComponent} from "./shared/components/game-master/game-master.component";
 import {GameComponent} from "./shared/components/game/game.component";
 import {HttpClientModule} from "@angular/common/http";
+import { GameFormComponent } from './shared/components/game-form/game-form.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
     AppComponent,
     GameMasterComponent,
-    GameComponent
+    GameComponent,
+    GameFormComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     CoreModule,
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Game} from '../../../core/models/game';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {GameService} from "../../../core/services/game.service";
@@ -18,7 +18,8 @@ export class GameComponent implements OnInit, OnDestroy {
 
   constructor(
     private gameService: GameService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private router: Router
   ) {
 
   }
@@ -30,6 +31,10 @@ export class GameComponent implements OnInit, OnDestroy {
         this.id = +params.id;
         this.changeCurrentGame();
       });
+  }
+
+  navigateToGame(game: Game): void {
+    this.router.navigate(['games', game.id], {state: {game}});
   }
 
   ngOnDestroy(): void {
