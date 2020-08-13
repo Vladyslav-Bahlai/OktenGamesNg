@@ -28,4 +28,8 @@ export class GameService {
     return this.httpClient.get<Game>('http://localhost:8080/games/get/' + id);
   }
 
+  addGame(game: Game): void {
+    this.httpClient.post('http://localhost:8080/games/add', game);
+  }
+
 }

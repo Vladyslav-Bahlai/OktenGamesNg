@@ -16,6 +16,7 @@ export class Game {
   additionalContent: Game[];
   mainGame: Game;
 
-  constructor() {
+  public constructor(init?: Partial<Game>) {
+    Object.assign(this, init);
   }
 }
