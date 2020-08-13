@@ -1,0 +1,85 @@
+<h1>Game form</h1>
+<form [formGroup]="reactiveFormGroup">
+  <div>
+    Game title: <br>
+    <input
+      formControlName="title"
+      type="text"
+    >
+  </div>
+  <div>
+    Company name:<br>
+    <input
+      formControlName="company"
+      type="text"
+    >
+  </div>
+  <div>
+    Price: <br>
+    <input
+      formControlName="price"
+      type="number"
+    >
+  </div>
+  <div>
+    Score: <br>
+    <input
+      formControlName="score"
+      type="number"
+    >
+  </div>
+  <div>
+    Release date: <br>
+    <input
+      formControlName="releaseDate"
+      type="date"
+    >
+  </div>
+  <div>
+    Amount: <br>
+    <input
+      formControlName="amount"
+      type="number"
+    >
+  </div>
+  <div>
+    Description: <br>
+    <textarea
+      formControlName="description"
+      type="text" rows="10" cols="40"></textarea>
+  </div>
+  <div>
+    <label>Genres:</label> <br>
+    <div>
+      <!-- add list of divs to be displayed after choosing genres, prevent duplication -->
+    </div>
+  </div>
+  <div>
+    <select
+      formControlName="genres"
+      multiple="multiple"
+    >
+      <option></option>
+      <option>RPG</option>
+      <option>Sandbox</option>
+      <option>Shooter</option>
+      <option>Adventure</option>
+      <option>MOBA</option>
+      <option>Horror</option>
+    </select>
+  </div>
+
+  <label>Platforms:</label> <br>
+  <div
+    formArrayName="platforms"
+    *ngFor="let platform of platformsFormArray.controls; let i = index">
+    <input
+      type="checkbox"
+      [formControlName]="i"
+    >
+    {{platformsData[i].name}}
+  </div>
+
+  <button (click)="registerForm()">Submit</button>
+
+</form>
