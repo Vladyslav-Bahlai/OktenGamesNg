@@ -8,19 +8,11 @@ import {Game} from "../models/game";
 })
 export class GameService {
 
-  games: Game[];
-  games$ = new BehaviorSubject(this.games);
-
   constructor(private httpClient: HttpClient) {
   }
 
-  getAllGames() {
-    this.httpClient
-      .get<Game[]>('http://localhost:8080/games/all')
-      .subscribe(value => {
-        this.games = value;
-        this.games$.next(this.games);
-      });
+  getAllGames(): Observable<Game[]> {
+    return this.httpClient.get<Game[]>('http://localhost:8080/games/all');
   }
 
   // consider deleting this method

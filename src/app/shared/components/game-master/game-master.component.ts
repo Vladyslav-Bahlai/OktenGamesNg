@@ -17,9 +17,6 @@ export class GameMasterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // is there a way to automate this method call ????
-    this.gamesList = this.gameService.games;
-    // console.log(this.gamesList);
   }
 
   ngOnDestroy(): void {

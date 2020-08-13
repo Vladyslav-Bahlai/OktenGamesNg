@@ -42,12 +42,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   private changeCurrentGame() {
-    this.gameService.games$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(games => {
-        this.game = games[this.id - 1];
-        console.log(this.game);
-      });
+
   }
 
 }
