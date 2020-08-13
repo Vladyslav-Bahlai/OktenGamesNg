@@ -2,23 +2,22 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import {GameMasterComponent} from "./shared/components/game-master/game-master.component";
 import {GameComponent} from "./shared/components/game/game.component";
-import {GameResolverService} from "./core/resolvers/game-resolver.service";
+import {GameFormComponent} from "./shared/components/game-form/game-form.component";
 
 
 const routes: Routes = [
   {
     path: 'games',
     component: GameMasterComponent,
-    resolve: {
-      games: GameResolverService
-    }
   },
   {
     path: 'games/:id',
     component: GameComponent,
-    resolve: {
-      games: GameResolverService
-    }
+  },
+  {
+    // add guards to restrict permission for regular users
+    path: 'forms/add-game',
+    component: GameFormComponent
   }
 ];
 

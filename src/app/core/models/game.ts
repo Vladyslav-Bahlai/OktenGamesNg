@@ -3,19 +3,20 @@ export class Game {
 
   id: number;
   title: string;
-  amount: number;
+  company: string;
   price: number;
   score: number;
+  releaseDate: string;
+  amount: number;
   imgUrl: string;
   description: string;
-  releaseDate: string;
-  company: string;
   screenShotsImgUrl: string[];
   genres: string[];
   platforms: string[];
   additionalContent: Game[];
   mainGame: Game;
 
-  constructor() {
+  public constructor(init?: Partial<Game>) {
+    Object.assign(this, init);
   }
 }
