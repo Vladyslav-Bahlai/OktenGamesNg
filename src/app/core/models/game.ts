@@ -1,6 +1,5 @@
 
 export class Game {
-
   id: number;
   title: string;
   company: string;
@@ -15,5 +14,9 @@ export class Game {
   platforms: string[];
   additionalContent: Game[];
   mainGame: Game;
+
+  constructor() {}
+
+
 
 }
