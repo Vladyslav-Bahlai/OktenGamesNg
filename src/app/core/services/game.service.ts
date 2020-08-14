@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {Observable} from 'rxjs';
 import {Game} from "../models/game";
-import {catchError} from "rxjs/operators";
+import {Platform} from "../models/platform";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,11 @@ export class GameService {
   }
 
   addGame(game: Game): Observable<Game> {
-     return this.httpClient.post<Game>('http://localhost:8080/games/add', game);
+    return this.httpClient.post<Game>('http://localhost:8080/games/add', game);
+  }
+
+  getAllPlatforms(): Observable<Platform[]> {
+    return this.httpClient.get<Platform[]>('http://localhost:8080/games/platforms');
   }
 
 }

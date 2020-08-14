@@ -14,7 +14,6 @@ export class Game {
   genres: string[];
   platforms: Platform[];
   additionalContent: Game[];
-  mainGame: Game;
 
   constructor() {}
 

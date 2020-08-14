@@ -19,7 +19,7 @@ export class GameMasterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('game-master init');
+    // gets games from game storage service and writes them to gameList variable
     this.gameStorage.games$
       .pipe(takeUntil(this.destroy$))
       .subscribe((games) => {
@@ -30,7 +30,6 @@ export class GameMasterComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.destroy$.next();
-    console.log('game-master destroying');
   }
 
 }
