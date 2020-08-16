@@ -22,7 +22,7 @@
 
   <h3>platforms:</h3>
   <div *ngFor="let platform of game?.platforms">
-    <p>{{ platform }}</p>
+    <p>{{ platform.name }}</p>
   </div>
 
   <div *ngIf="game?.additionalContent.length > 0">

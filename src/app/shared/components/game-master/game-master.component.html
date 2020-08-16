@@ -1,4 +1,4 @@
 <h1>Games:</h1>
-<div *ngFor="let game of gamesList; let index = index">
-  <a [routerLink]="[game.id]">{{game.title}}</a>
+<div *ngFor="let game of gamesList">
+  <a (click)="navigateToGame(game)">{{game.title}}</a>
 </div>

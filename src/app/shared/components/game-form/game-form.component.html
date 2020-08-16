@@ -48,31 +48,37 @@
       formControlName="description"
       type="text" rows="10" cols="40"></textarea>
   </div>
+
   <div>
-    <label>Genres:</label> <br>
-    <div>
-      <!-- add list of divs to be displayed after choosing genres, prevent duplication -->
+    Genres: <br>
+    <div
+      #genreSelectionBtn
+      class="genreSelectionBtn"
+      (click)="toggleGenreSelectionMenu()"
+    >
+      Add genres:
+      <div
+        #genreSelection
+        class="genreSelection"
+        *ngIf="isGenreSelectionVisible"
+      >
+        <ul>
+          <li
+            *ngFor="let genre of genresFormArray.controls; let i = index"
+          >
+            {{genresData[i].name}}</li>
+        </ul>
+      </div>
     </div>
   </div>
-  <div>
-    <select
-      formControlName="genres"
-      multiple="multiple"
-    >
-      <option></option>
-      <option>RPG</option>
-      <option>Sandbox</option>
-      <option>Shooter</option>
-      <option>Adventure</option>
-      <option>MOBA</option>
-      <option>Horror</option>
-    </select>
-  </div>
+
+
 
   <label>Platforms:</label> <br>
   <div
     formArrayName="platforms"
-    *ngFor="let platform of platformsFormArray.controls; let i = index">
+    *ngFor="let platform of platformsFormArray.controls; let i = index"
+  >
     <input
       type="checkbox"
       [formControlName]="i"

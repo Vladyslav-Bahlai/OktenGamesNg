@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Game} from '../../../core/models/game';
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
-import {GameService} from "../../../core/services/game.service";
+import {GameStorageService} from "../../../core/services/game-storage.service";
 
 @Component({
   selector: 'app-game',
@@ -13,36 +13,31 @@ import {GameService} from "../../../core/services/game.service";
 export class GameComponent implements OnInit, OnDestroy {
 
   game: Game;
-  id: number;
   destroy$ = new Subject();
 
   constructor(
-    private gameService: GameService,
-    private activatedRoute: ActivatedRoute,
-    private router: Router
+    private gameStorage: GameStorageService,
+    private route: ActivatedRoute
   ) {
 
   }
 
   ngOnInit() {
-    this.activatedRoute.params
+    this.route.params
       .pipe(takeUntil(this.destroy$))
-      .subscribe(params => {
-        this.id = +params.id;
-        this.changeCurrentGame();
+      .subscribe((params) => {
+        this.game = this.getGameFromStorageById(+params.id);
+        console.log(this.game);
       });
-  }
-
-  navigateToGame(game: Game): void {
-    this.router.navigate(['games', game.id], {state: {game}});
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
   }
 
-  private changeCurrentGame() {
-
+  private getGameFromStorageById(id: number): Game {
+    const gameById = this.gameStorage.games$.value.find(game => game.id === id);
+    return gameById as Game;
   }
 
 }
