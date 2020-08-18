@@ -6,6 +6,7 @@ import {GameStorageService} from "../../../core/services/game-storage.service";
 import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
 import {GameService} from "../../../core/services/game.service";
+import {Genre} from "../../../core/models/genre";
 
 @Component({
   selector: 'app-game-form',
@@ -21,18 +22,9 @@ export class GameFormComponent implements OnInit, OnDestroy {
   private game: Game;
   private reactiveFormGroup: FormGroup;
   private platformsData: Platform[];
-  private genresData = [
-    {id: 1, name: 'RPG'},
-    {id: 2, name: 'Shooter'},
-    {id: 3, name: 'Sandbox'},
-    {id: 4, name: 'Adventure'},
-    {id: 5, name: 'Stealth'},
-    {id: 6, name: 'Platformer'},
-    {id: 7, name: 'Indie'},
-    {id: 8, name: 'Hardcore'},
-    {id: 9, name: 'Simulator'},
-    {id: 10, name: 'VR'},
-  ];
+  private genresData: Genre[];
+  // stores values which genre was selected in form because idk how to implement it inside form
+  private selectedGenresArray = [];
   private isGenreSelectionVisible = false;
   private destroy$ = new Subject();
 
@@ -45,13 +37,14 @@ export class GameFormComponent implements OnInit, OnDestroy {
     // listens to clicks and hides genreSelectionMenu if user clicks outside the menu
     this.renderer.listen('window', 'click', (e: Event) => {
       if (!this.genreButton.nativeElement.contains(e.target) &&
-          this.genreSelectionMenu &&
-          !this.genreSelectionMenu.nativeElement.contains(e.target)
+        this.genreSelectionMenu &&
+        !this.genreSelectionMenu.nativeElement.contains(e.target)
       ) {
         this.isGenreSelectionVisible = false;
       }
     });
   }
+
   // setter is used to get reference to genreSelectionMenu so when genres menu becomes visible (*ngIf='true')
   // this setter is being automatically called and rewrites undefined value with actual reference
   @ViewChild('genreSelection', {static: false}) set menu(menuElement: ElementRef) {
@@ -75,20 +68,27 @@ export class GameFormComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((platforms) => {
         this.platformsData = platforms;
-        this.addCheckboxesToForm();
+        this.addPlatformsToForm();
       });
-    // this.gameService.getAllGenres()
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((genres) => {
-    //     this.genresData = genres;
-    //   });
+    this.gameService.getAllGenres()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((genres) => {
+        this.genresData = genres;
+        this.addGenresToForm();
+      });
     this.createForm();
   }
 
   registerForm() {
+    // get genre and platform objects
     const platformsList = this.getFormPlatforms();
+    const genresList = this.getFormGenres();
     // collects all values from our form and cast it to Game object
-    this.game = Object.assign(new Game(), {...this.reactiveFormGroup.value, platforms: platformsList});
+    this.game = Object.assign(new Game(), {
+      ...this.reactiveFormGroup.value,
+      platforms: platformsList,
+      genres: genresList
+    });
     console.log(this.game);
     // sends new game obj to server, then adds response game object to game storage service
     this.gameService.addGame(this.game)
@@ -106,7 +106,6 @@ export class GameFormComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
   }
-
 
   private createForm(): void {
     this.reactiveFormGroup = this.formBuilder.group({
@@ -129,16 +128,33 @@ export class GameFormComponent implements OnInit, OnDestroy {
     const platformsList = this.reactiveFormGroup.value.platforms
       .map((value, i) => value ? Object.assign(new Platform(), this.platformsData[i]) : null)
       .filter(v => v !== null);
-
     return platformsList;
   }
-
-  // initialises checkboxes FormArray with false values so they all are unchecked
-  private addCheckboxesToForm() {
-    this.platformsData.forEach(() => this.platformsFormArray.push(new FormControl(false)));
-    this.genresData.forEach(() => this.genresFormArray.push(new FormControl(false)));
+  // maps through list of boolean values in selectedGenres and adds genre object
+  // to genresList if this genre was selected in form
+  private getFormGenres(): Genre[] {
+    const genresList = this.selectedGenresArray
+      .map((value, i) => value ? Object.assign(new Genre(), this.genresData[i]) : null)
+      .filter(v => v !== null);
+    return genresList;
   }
 
+  // initialises checkboxes FormArray with false values so they all are unchecked by default
+  private addPlatformsToForm() {
+    this.platformsData.forEach(() => this.platformsFormArray.push(new FormControl(false)));
+
+  }
+  // initialises form genres field and selectedGenres array with false values so they all are unchecked by default
+  private addGenresToForm() {
+    this.genresData.forEach(() => this.genresFormArray.push(new FormControl(false)));
+    this.genresData.forEach(() => this.selectedGenresArray.push(false));
+  }
+  // flips boolean value in selectedGenres by index.
+  // Index corresponds to the genre position in genres selection menu
+  private addGenreToForm(index: number): void {
+    this.selectedGenresArray[index] = !this.selectedGenresArray[index];
+  }
+  // makes genres selection menu visible after clicking on 'Add genres' button
   private toggleGenreSelectionMenu() {
     this.isGenreSelectionVisible = true;
   }

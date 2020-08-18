@@ -2,8 +2,6 @@ div {
   margin: 15px 0;
 }
 
-
-
 .genreSelectionBtn {
   display: inline-block;
   position: relative;
@@ -11,7 +9,6 @@ div {
   padding: 5px;
 
   .genreSelection {
-    background: dodgerblue;
     position: absolute;
     margin: 0;
     bottom: 0;
@@ -24,9 +21,22 @@ div {
         text-align: center;
         padding: 5px 15px;
       }
-      li:hover {
-        background-color: cornflowerblue;
-      }
     }
   }
+}
+
+.genre-btn-default {
+  background-color: dodgerblue;
+}
+
+.genre-btn-default:hover {
+  background-color: cornflowerblue;
+}
+
+.genre-btn-selected {
+  background-color: chartreuse;
+}
+
+.genre-btn-selected:hover {
+  background-color: greenyellow;
 }

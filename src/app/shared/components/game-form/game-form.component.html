@@ -65,8 +65,11 @@
         <ul>
           <li
             *ngFor="let genre of genresFormArray.controls; let i = index"
+            [ngClass]="selectedGenresArray[i] ? 'genre-btn-selected' : 'genre-btn-default'"
+            (click)="addGenreToForm(i)"
           >
-            {{genresData[i].name}}</li>
+            {{genresData[i].name}}
+          </li>
         </ul>
       </div>
     </div>
