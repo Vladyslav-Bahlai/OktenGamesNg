@@ -1,32 +1,66 @@
-div {
-  margin: 15px 0;
-}
+form > div {
+    margin: 20px 0;
+  }
 
-
-
-.genreSelectionBtn {
-  display: inline-block;
+.genre-manager {
   position: relative;
-  background-color: aqua;
-  padding: 5px;
+
+  .genreSelectionBtn {
+    display: inline-block;
+    background-color: aqua;
+    padding: 5px;
+  }
 
   .genreSelection {
-    background: dodgerblue;
     position: absolute;
+    width: 50%;
+    display: flex;
+    flex-wrap: wrap;
     margin: 0;
-    bottom: 0;
-    left: 100%;
-    ul {
-      list-style: none;
+    bottom: 100%;
+    left: 0;
+
+    div {
+      width: 20%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 15px 10px;
       margin: 0;
-      padding: 0;
-      li {
-        text-align: center;
-        padding: 5px 15px;
-      }
-      li:hover {
-        background-color: cornflowerblue;
-      }
     }
   }
 }
+
+.platform-section > div {
+  margin: 10px 0;
+}
+
+.genre-section > div {
+  margin: 10px 0;
+}
+
+.selected-genres-display {
+  display: flex;
+  flex-wrap: wrap;
+
+  div {
+    margin: 0 10px;
+  }
+}
+
+.genre-btn-default {
+  background-color: dodgerblue;
+}
+
+.genre-btn-default:hover {
+  background-color: cornflowerblue;
+}
+
+.genre-btn-selected {
+  background-color: chartreuse;
+}
+
+.genre-btn-selected:hover {
+  background-color: greenyellow;
+}
+
