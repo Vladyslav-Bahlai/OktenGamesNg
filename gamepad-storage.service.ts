@@ -1,0 +1,29 @@
+import {Injectable, OnDestroy} from '@angular/core';
+import {BehaviorSubject, Subject} from 'rxjs';
+import {GamepadService} from './gamepad.service';
+import {takeUntil} from 'rxjs/operators';
+import {Gamepad} from '../models/gamepad';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class GamepadStorageService implements OnDestroy {
+  gamepads: Gamepad[];
+  gamepads$ = new BehaviorSubject(this.gamepads);
+  private destroy$ = new Subject();
+
+  constructor(private gamepadService: GamepadService) {
+    console.log('gamepad storage init');
+    console.log('get all gamepads from server...');
+    this.gamepadService.getAllGamepads()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((gamepads) => {
+          this.gamepads$.next(gamepads);
+          console.log(gamepads);
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+  }
+}
