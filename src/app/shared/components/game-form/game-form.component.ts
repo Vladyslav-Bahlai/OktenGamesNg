@@ -156,7 +156,7 @@ export class GameFormComponent implements OnInit, OnDestroy {
   }
   // makes genres selection menu visible after clicking on 'Add genres' button
   private toggleGenreSelectionMenu() {
-    this.isGenreSelectionVisible = true;
+    this.isGenreSelectionVisible = !this.isGenreSelectionVisible;
   }
 
 }

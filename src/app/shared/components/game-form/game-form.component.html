@@ -49,44 +49,54 @@
       type="text" rows="10" cols="40"></textarea>
   </div>
 
-  <div>
-    Genres: <br>
-    <div
-      #genreSelectionBtn
-      class="genreSelectionBtn"
-      (click)="toggleGenreSelectionMenu()"
-    >
-      Add genres:
+  <div class="genre-section">
+    <div class="genre-manager">
+      <div
+        #genreSelectionBtn
+        class="genreSelectionBtn"
+        (click)="toggleGenreSelectionMenu()"
+      >
+        Add genres:
+      </div>
       <div
         #genreSelection
         class="genreSelection"
         *ngIf="isGenreSelectionVisible"
       >
-        <ul>
-          <li
-            *ngFor="let genre of genresFormArray.controls; let i = index"
-            [ngClass]="selectedGenresArray[i] ? 'genre-btn-selected' : 'genre-btn-default'"
-            (click)="addGenreToForm(i)"
-          >
-            {{genresData[i].name}}
-          </li>
-        </ul>
+        <div
+          *ngFor="let genre of genresFormArray.controls; let i = index"
+          [ngClass]="selectedGenresArray[i] ? 'genre-btn-selected' : 'genre-btn-default'"
+          (click)="addGenreToForm(i)"
+        >
+          {{genresData[i].name}}
+        </div>
       </div>
     </div>
+    <div class="selected-genres-display">
+      <div *ngIf="getFormGenres().length > 0">
+        Selected Genres: <br>
+      </div>
+      <div
+        *ngFor="let genre of getFormGenres()"
+      >
+        {{genre.name}}
+      </div>
+    </div>
+
   </div>
 
-
-
-  <label>Platforms:</label> <br>
-  <div
-    formArrayName="platforms"
-    *ngFor="let platform of platformsFormArray.controls; let i = index"
-  >
-    <input
-      type="checkbox"
-      [formControlName]="i"
+  <div class="platform-section">
+    <label>Platforms:</label> <br>
+    <div
+      formArrayName="platforms"
+      *ngFor="let platform of platformsFormArray.controls; let i = index"
     >
-    {{platformsData[i].name}}
+      <input
+        type="checkbox"
+        [formControlName]="i"
+      >
+      {{platformsData[i].name}}
+    </div>
   </div>
 
   <button (click)="registerForm()">Submit</button>
