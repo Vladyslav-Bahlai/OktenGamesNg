@@ -3,7 +3,7 @@ import {Game} from '../../../core/models/game';
 import {ActivatedRoute} from "@angular/router";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
-import {GameService} from "../../../core/services/game.service";
+import {GameStorageService} from "../../../core/services/game-storage.service";
 
 @Component({
   selector: 'app-game',
@@ -13,33 +13,31 @@ import {GameService} from "../../../core/services/game.service";
 export class GameComponent implements OnInit, OnDestroy {
 
   game: Game;
-  id: string;
   destroy$ = new Subject();
 
   constructor(
-    private gameService: GameService,
-    private activatedRoute: ActivatedRoute
+    private gameStorage: GameStorageService,
+    private route: ActivatedRoute
   ) {
+
   }
 
   ngOnInit() {
-    this.activatedRoute.params
+    this.route.params
       .pipe(takeUntil(this.destroy$))
-      .subscribe(params => {
-        this.id = params.id;
-      });
-
-    this.gameService
-      .getGameById(this.id)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(value => {
-        this.game = value;
+      .subscribe((params) => {
+        this.game = this.getGameFromStorageById(+params.id);
         console.log(this.game);
       });
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
+  }
+
+  private getGameFromStorageById(id: number): Game {
+    const gameById = this.gameStorage.games$.value.find(game => game.id === id);
+    return gameById as Game;
   }
 
 }

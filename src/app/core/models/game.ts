@@ -1,21 +1,22 @@
+import {Platform} from "./platform";
 
 export class Game {
-
   id: number;
   title: string;
-  amount: number;
+  company: string;
   price: number;
   score: number;
+  releaseDate: string;
+  amount: number;
   imgUrl: string;
   description: string;
-  releaseDate: string;
-  company: string;
   screenShotsImgUrl: string[];
   genres: string[];
-  platforms: string[];
+  platforms: Platform[];
   additionalContent: Game[];
-  mainGame: Game;
 
-  constructor() {
-  }
+  constructor() {}
+
+
+
 }

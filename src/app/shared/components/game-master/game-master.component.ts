@@ -1,8 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {GameService} from '../../../core/services/game.service';
 import {Game} from '../../../core/models/game';
 import {Subject} from "rxjs";
+import {GameStorageService} from "../../../core/services/game-storage.service";
 import {takeUntil} from "rxjs/operators";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-game-master',
@@ -14,16 +15,22 @@ export class GameMasterComponent implements OnInit, OnDestroy {
   gamesList: Game[];
   destroy$ = new Subject();
 
-  constructor(private gameService: GameService) {
-    this.gameService.getAllGames()
+  constructor(
+    private gameStorage: GameStorageService,
+    private router: Router
+  ) { }
+
+  ngOnInit() {
+    // gets games from game storage service and writes them to gameList variable
+    this.gameStorage.games$
       .pipe(takeUntil(this.destroy$))
-      .subscribe(values => {
-        console.log(values);
-        this.gamesList = values;
+      .subscribe((games) => {
+        this.gamesList = games;
       });
   }
 
-  ngOnInit() {
+  navigateToGame(game: Game): void {
+    this.router.navigate(['games', game.id], {state: {game}});
   }
 
   ngOnDestroy(): void {

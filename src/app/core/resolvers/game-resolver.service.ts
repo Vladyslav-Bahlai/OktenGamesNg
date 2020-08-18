@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from "@angular/router";
 import {Observable} from "rxjs";
 import {Game} from "../models/game";
-import {HttpClient} from "@angular/common/http";
+import {GameService} from "../services/game.service";
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +10,11 @@ import {HttpClient} from "@angular/common/http";
 export class GameResolverService implements Resolve<Game[]> {
 
   constructor(
-    private httpClient: HttpClient
+    private gameService: GameService
   ) { }
 
+  // redo this method so it analise whether url is '/games' or '/games/:id'
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<Game[]> | Promise<Game[]> | Game[] {
-    return this.httpClient.get<Game[]>('http://localhost:8080/games/all');
+    return this.gameService.getAllGames();
   }
 }
