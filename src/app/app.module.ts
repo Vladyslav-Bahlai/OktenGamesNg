@@ -9,6 +9,7 @@ import {GameComponent} from "./shared/components/game/game.component";
 import {HttpClientModule} from "@angular/common/http";
 import { GameFormComponent } from './shared/components/game-form/game-form.component';
 import {ReactiveFormsModule} from "@angular/forms";
+import { GameAddonFormComponent } from './shared/components/game-addon-form/game-addon-form.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import {ReactiveFormsModule} from "@angular/forms";
     GameMasterComponent,
     GameComponent,
     GameFormComponent,
+    GameAddonFormComponent,
   ],
   imports: [
     BrowserModule,

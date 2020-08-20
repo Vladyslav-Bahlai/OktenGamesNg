@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {Game} from "../../../core/models/game";
 import {Platform} from "../../../core/models/platform";
@@ -51,6 +51,14 @@ export class GameFormComponent implements OnInit, OnDestroy {
     this.genreSelectionMenu = menuElement ? menuElement : undefined;
   }
 
+  @Input() set setPlatformsData(value: Platform[]) {
+    this.platformsData = value;
+  }
+
+  @Input() set setGenresData(value: Genre[]) {
+    this.genresData = value;
+  }
+
   // getter for platforms control variable to write less code
   get platformsFormArray() {
     return this.reactiveFormGroup.controls.platforms as FormArray;
@@ -59,6 +67,11 @@ export class GameFormComponent implements OnInit, OnDestroy {
   // getter for platforms control variable to write less code
   get genresFormArray() {
     return this.reactiveFormGroup.controls.genres as FormArray;
+  }
+
+  // getter for addons control variable to write less code
+  get addonsFormArray() {
+    return this.reactiveFormGroup.controls.additionalContent as FormArray;
   }
 
   ngOnInit() {
@@ -79,7 +92,7 @@ export class GameFormComponent implements OnInit, OnDestroy {
     this.createForm();
   }
 
-  registerForm() {
+  protected registerForm() {
     // get genre and platform objects
     const platformsList = this.getFormPlatforms();
     const genresList = this.getFormGenres();
@@ -91,12 +104,12 @@ export class GameFormComponent implements OnInit, OnDestroy {
     });
     console.log(this.game);
     // sends new game obj to server, then adds response game object to game storage service
-    this.gameService.addGame(this.game)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((game) => {
-        this.gameStorage.games$.value.push(game);
-        console.log(game);
-      });
+    // this.gameService.addGame(this.game)
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((game) => {
+    //     this.gameStorage.games$.value.push(game);
+    //     console.log(game);
+    //   });
   }
 
   clearForm() {
@@ -119,20 +132,22 @@ export class GameFormComponent implements OnInit, OnDestroy {
       description: '',
       genres: new FormArray([]),
       platforms: new FormArray([]),
+      additionalContent: new FormArray([]),
     });
   }
 
   // maps through list of boolean values in form platforms and adds platform object
   // to platformsList if this platform was checked in form
-  private getFormPlatforms(): Platform[] {
+  protected getFormPlatforms(): Platform[] {
     const platformsList = this.reactiveFormGroup.value.platforms
       .map((value, i) => value ? Object.assign(new Platform(), this.platformsData[i]) : null)
       .filter(v => v !== null);
     return platformsList;
   }
+
   // maps through list of boolean values in selectedGenres and adds genre object
   // to genresList if this genre was selected in form
-  private getFormGenres(): Genre[] {
+  protected getFormGenres(): Genre[] {
     const genresList = this.selectedGenresArray
       .map((value, i) => value ? Object.assign(new Genre(), this.genresData[i]) : null)
       .filter(v => v !== null);
@@ -140,23 +155,34 @@ export class GameFormComponent implements OnInit, OnDestroy {
   }
 
   // initialises checkboxes FormArray with false values so they all are unchecked by default
-  private addPlatformsToForm() {
+  protected addPlatformsToForm() {
     this.platformsData.forEach(() => this.platformsFormArray.push(new FormControl(false)));
 
   }
+
   // initialises form genres field and selectedGenres array with false values so they all are unchecked by default
-  private addGenresToForm() {
+  protected addGenresToForm() {
     this.genresData.forEach(() => this.genresFormArray.push(new FormControl(false)));
     this.genresData.forEach(() => this.selectedGenresArray.push(false));
   }
+
   // flips boolean value in selectedGenres by index.
   // Index corresponds to the genre position in genres selection menu
   private addGenreToForm(index: number): void {
     this.selectedGenresArray[index] = !this.selectedGenresArray[index];
   }
+
   // makes genres selection menu visible after clicking on 'Add genres' button
   private toggleGenreSelectionMenu() {
     this.isGenreSelectionVisible = !this.isGenreSelectionVisible;
+  }
+
+  private addAddonForm(): void {
+    this.addonsFormArray.push(new FormControl(new Game()));
+  }
+
+  private removeAddonForm(index: number): void {
+    this.addonsFormArray.removeAt(index);
   }
 
 }

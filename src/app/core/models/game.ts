@@ -9,7 +9,7 @@ export class Game {
   score: number;
   releaseDate: string;
   amount: number;
-  imgUrl: string;
+  titleImgUrl: string;
   description: string;
   screenShotsImgUrl: string[];
   genres: Genre[];

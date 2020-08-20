@@ -99,6 +99,25 @@
     </div>
   </div>
 
+  <div class="addons-section">
+    <button
+      class="add-addon-btn"
+      (click)="addAddonForm()"
+    >
+      Add Addon
+    </button>
+    <div
+      *ngFor="let addon of addonsFormArray.controls; let i = index"
+    >
+      Game addon form - {{i}}
+      <button
+        (click)="removeAddonForm(i)"
+      >
+        Remove
+      </button>
+    </div>
+  </div>
+
   <button (click)="registerForm()">Submit</button>
 
 </form>
