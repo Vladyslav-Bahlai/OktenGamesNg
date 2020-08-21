@@ -51,14 +51,6 @@ export class GameFormComponent implements OnInit, OnDestroy {
     this.genreSelectionMenu = menuElement ? menuElement : undefined;
   }
 
-  @Input() set setPlatformsData(value: Platform[]) {
-    this.platformsData = value;
-  }
-
-  @Input() set setGenresData(value: Genre[]) {
-    this.genresData = value;
-  }
-
   // getter for platforms control variable to write less code
   get platformsFormArray() {
     return this.reactiveFormGroup.controls.platforms as FormArray;
@@ -132,7 +124,7 @@ export class GameFormComponent implements OnInit, OnDestroy {
       description: '',
       genres: new FormArray([]),
       platforms: new FormArray([]),
-      additionalContent: new FormArray([]),
+      additionalContent: '',
     });
   }
 

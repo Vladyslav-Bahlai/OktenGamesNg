@@ -1,1 +1,43 @@
-<p>game-addon-form works!</p>
+<form [formGroup]="reactiveFormGroup">
+  <div>
+    Game title: <br>
+    <input
+      formControlName="title"
+      type="text"
+    >
+  </div>
+  <div>
+    Price: <br>
+    <input
+      formControlName="price"
+      type="number"
+    >
+  </div>
+  <div>
+    Score: <br>
+    <input
+      formControlName="score"
+      type="number"
+    >
+  </div>
+  <div>
+    Release date: <br>
+    <input
+      formControlName="releaseDate"
+      type="date"
+    >
+  </div>
+  <div>
+    Amount: <br>
+    <input
+      formControlName="amount"
+      type="number"
+    >
+  </div>
+  <div>
+    Description: <br>
+    <textarea
+      formControlName="description"
+      type="text" rows="10" cols="40"></textarea>
+  </div>
+</form>

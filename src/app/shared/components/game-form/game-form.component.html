@@ -109,7 +109,7 @@
     <div
       *ngFor="let addon of addonsFormArray.controls; let i = index"
     >
-      Game addon form - {{i}}
+      <app-game-addon-form></app-game-addon-form>
       <button
         (click)="removeAddonForm(i)"
       >
