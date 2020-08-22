@@ -1,0 +1,32 @@
+<div class="genre-manager">
+  <div
+    #genreSelectionBtn
+    class="genreSelectionBtn"
+    (click)="toggleGenreSelectionMenu()"
+  >
+    Add genres:
+  </div>
+  <div
+    #genreSelection
+    class="genreSelection"
+    *ngIf="isGenreSelectionVisible"
+  >
+    <div
+      *ngFor="let genre of genresData; let i = index"
+      [ngClass]="selectedGenres.includes(genre) ? 'genre-btn-selected' : 'genre-btn-default'"
+      (click)="manageSelectedGenres(i)"
+    >
+      {{genre.name}}
+    </div>
+  </div>
+</div>
+<div class="selected-genres-display">
+  <div *ngIf="selectedGenres.length > 0">
+    Selected Genres: <br>
+  </div>
+  <div
+    *ngFor="let genre of selectedGenres; let i = index"
+  >
+    {{genre.name}}
+  </div>
+</div>

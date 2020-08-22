@@ -1,17 +1,24 @@
-import {Component, OnInit, Renderer2} from '@angular/core';
-import {GameFormComponent} from "../game-form/game-form.component";
-import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
-import {GameService} from "../../../core/services/game.service";
-import {GameStorageService} from "../../../core/services/game-storage.service";
+import {Component, forwardRef, OnDestroy, OnInit} from '@angular/core';
+import {ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {takeUntil} from "rxjs/operators";
+import {Subject} from "rxjs";
 
 @Component({
   selector: 'app-game-addon-form',
   templateUrl: './game-addon-form.component.html',
-  styleUrls: ['./game-addon-form.component.scss']
+  styleUrls: ['./game-addon-form.component.scss'],
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => GameAddonFormComponent),
+      multi: true
+    }
+  ]
 })
-export class GameAddonFormComponent implements OnInit {
+export class GameAddonFormComponent implements OnInit, OnDestroy, ControlValueAccessor {
 
   private reactiveFormGroup: FormGroup;
+  private destroy$ = new Subject();
 
   constructor(
     private formBuilder: FormBuilder
@@ -28,6 +35,33 @@ export class GameAddonFormComponent implements OnInit {
       imgUrl: '',
       description: '',
     });
+  }
+
+  public onTouchCb() {
+  }
+
+  registerOnChange(fn: any): void {
+    this.reactiveFormGroup.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(fn);
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouchCb = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    isDisabled ? this.reactiveFormGroup.disable() : this.reactiveFormGroup.enable();
+  }
+
+  writeValue(obj: any): void {
+    if (obj) {
+      this.reactiveFormGroup.setValue(obj, {emitEvent: false});
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
   }
 
 }

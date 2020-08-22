@@ -10,6 +10,7 @@ import {HttpClientModule} from "@angular/common/http";
 import { GameFormComponent } from './shared/components/game-form/game-form.component';
 import {ReactiveFormsModule} from "@angular/forms";
 import { GameAddonFormComponent } from './shared/components/game-addon-form/game-addon-form.component';
+import { GenresTableComponent } from './shared/components/genres-table/genres-table.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { GameAddonFormComponent } from './shared/components/game-addon-form/game
     GameComponent,
     GameFormComponent,
     GameAddonFormComponent,
+    GenresTableComponent,
   ],
   imports: [
     BrowserModule,
