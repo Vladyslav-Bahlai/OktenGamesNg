@@ -13,7 +13,7 @@
   >
     <div
       *ngFor="let genre of genresData; let i = index"
-      [ngClass]="selectedGenres.includes(genre) ? 'genre-btn-selected' : 'genre-btn-default'"
+      [ngClass]="isGenreSelected(genre) ? 'genre-btn-selected' : 'genre-btn-default'"
       (click)="manageSelectedGenres(i)"
     >
       {{genre.name}}
@@ -21,11 +21,11 @@
   </div>
 </div>
 <div class="selected-genres-display">
-  <div *ngIf="selectedGenres.length > 0">
+  <div *ngIf="selectedGenres.controls.length > 0">
     Selected Genres: <br>
   </div>
   <div
-    *ngFor="let genre of selectedGenres; let i = index"
+    *ngFor="let genre of selectedGenres.value; let i = index"
   >
     {{genre.name}}
   </div>
