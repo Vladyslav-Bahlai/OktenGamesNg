@@ -20,7 +20,7 @@ export class GenresTableComponent implements OnInit, OnDestroy {
   private genreSelectionMenu: ElementRef;
   private genresData: Genre[];
   // stores values which genre was selected in form because idk how to implement it inside form
-  private genresFormGroup: FormGroup;
+  private selectedGenres = [];
   private isGenreSelectionVisible = false;
   private destroy$ = new Subject();
 
@@ -48,11 +48,6 @@ export class GenresTableComponent implements OnInit, OnDestroy {
 
   // getter for platforms control variable to write less code
   get genresFormArray() {
-    return this.genresFormGroup.controls.genres as FormArray;
-  }
-
-  // getter for platforms control variable to write less code
-  get selectedGenres() {
     return this.parentForm.controls.genres as FormArray;
   }
 
@@ -60,7 +55,6 @@ export class GenresTableComponent implements OnInit, OnDestroy {
     this.gameService.getAllGenres()
       .pipe(takeUntil(this.destroy$))
       .subscribe((genres) => {
-        this.createGenresForm();
         this.genresData = genres;
         this.fillGenresArray();
       });
@@ -69,12 +63,6 @@ export class GenresTableComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.destroy$.next();
-  }
-
-  private createGenresForm() {
-    this.genresFormGroup = this.formBuilder.group({
-      genres: new FormArray([])
-    });
   }
 
   private fillGenresArray(): void {
@@ -92,18 +80,15 @@ export class GenresTableComponent implements OnInit, OnDestroy {
     this.genresFormArray.at(index).setValue(!isGenreSelected);
 
     if (isGenreSelected) {
-      const selectedGenreIndex = this.selectedGenres.controls
-        .findIndex((control) => control.value.id === selectedGenre.id);
-      this.selectedGenres.removeAt(selectedGenreIndex);
+      const selectedGenreIndex = this.selectedGenres.indexOf(selectedGenre);
+      this.selectedGenres.splice(selectedGenreIndex, 1);
     } else {
-      this.selectedGenres.push(this.formBuilder.group({...selectedGenre}));
+      this.selectedGenres.push(selectedGenre);
     }
   }
 
   private isGenreSelected(genre: Genre): boolean {
-    const selectedGenre = this.selectedGenres.controls
-      .find((control) => control.value.id === genre.id);
-    return !!selectedGenre;
+    return this.selectedGenres.includes(genre);
   }
 
 }

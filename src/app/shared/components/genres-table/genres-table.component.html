@@ -21,11 +21,11 @@
   </div>
 </div>
 <div class="selected-genres-display">
-  <div *ngIf="selectedGenres.controls.length > 0">
+  <div *ngIf="selectedGenres.length > 0">
     Selected Genres: <br>
   </div>
   <div
-    *ngFor="let genre of selectedGenres.value; let i = index"
+    *ngFor="let genre of selectedGenres; let i = index"
   >
     {{genre.name}}
   </div>

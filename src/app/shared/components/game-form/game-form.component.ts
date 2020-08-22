@@ -1,8 +1,7 @@
-import {Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {Game} from "../../../core/models/game";
 import {Platform} from "../../../core/models/platform";
-import {GameStorageService} from "../../../core/services/game-storage.service";
 import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
 import {GameService} from "../../../core/services/game.service";
@@ -22,7 +21,8 @@ export class GameFormComponent implements OnInit, OnDestroy {
   constructor(
     private readonly formBuilder: FormBuilder,
     private gameService: GameService,
-  ) { }
+  ) {
+  }
 
   // getter for platforms control variable to write less code
   get platformsFormArray() {
@@ -46,15 +46,26 @@ export class GameFormComponent implements OnInit, OnDestroy {
     this.createForm();
   }
 
+  clearForm() {
+    this.reactiveFormGroup.reset();
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+  }
+
   protected registerForm() {
     // get genre and platform objects
     const platformsList = this.getFormPlatforms();
+    const genreList = this.getFormGenres();
     // collects all values from our form and cast it to Game object
     this.game = Object.assign(new Game(), {
       ...this.reactiveFormGroup.value,
       platforms: platformsList,
+      genres: genreList
     });
     console.log(this.reactiveFormGroup);
+    console.log(this.game);
     // sends new game obj to server, then adds response game object to game storage service
     // this.gameService.addGame(this.game)
     //   .pipe(takeUntil(this.destroy$))
@@ -64,12 +75,30 @@ export class GameFormComponent implements OnInit, OnDestroy {
     //   });
   }
 
-  clearForm() {
-    this.reactiveFormGroup.reset();
+  // to platformsList if this platform was checked in form
+  protected getFormPlatforms(): Platform[] {
+    const platformsList = this.reactiveFormGroup.value.platforms
+      .map((value, i) => value ? Object.assign(new Platform(), this.platformsData[i]) : null)
+      .filter(v => v !== null);
+    return platformsList;
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
+  // maps through list of boolean values in form platforms and adds platform object
+
+  // to platformsList if this platform was checked in form
+  protected getFormGenres(): Genre[] {
+    const genreList = this.reactiveFormGroup.value.genres
+      .map((value, i) => value ? Object.assign(new Genre(), this.platformsData[i]) : null)
+      .filter(v => v !== null);
+    return genreList;
+  }
+
+  // maps through list of boolean values in form platforms and adds platform object
+
+  // initialises checkboxes FormArray with false values so they all are unchecked by default
+  protected addPlatformsToForm() {
+    this.platformsData.forEach(() => this.platformsFormArray.push(new FormControl(false)));
+
   }
 
   private createForm(): void {
@@ -86,21 +115,6 @@ export class GameFormComponent implements OnInit, OnDestroy {
       platforms: new FormArray([]),
       additionalContent: new FormArray([]),
     });
-  }
-
-  // maps through list of boolean values in form platforms and adds platform object
-  // to platformsList if this platform was checked in form
-  protected getFormPlatforms(): Platform[] {
-    const platformsList = this.reactiveFormGroup.value.platforms
-      .map((value, i) => value ? Object.assign(new Platform(), this.platformsData[i]) : null)
-      .filter(v => v !== null);
-    return platformsList;
-  }
-
-  // initialises checkboxes FormArray with false values so they all are unchecked by default
-  protected addPlatformsToForm() {
-    this.platformsData.forEach(() => this.platformsFormArray.push(new FormControl(false)));
-
   }
 
   private addAddonForm(): void {
