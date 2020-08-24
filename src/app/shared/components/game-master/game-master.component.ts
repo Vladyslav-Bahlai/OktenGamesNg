@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Game} from '../../../core/models/game';
-import {Subject} from "rxjs";
-import {GameStorageService} from "../../../core/services/game-storage.service";
-import {takeUntil} from "rxjs/operators";
-import {Router} from "@angular/router";
+import {Subject} from 'rxjs';
+import {GameStorageService} from '../../../core/services/game-storage.service';
+import {takeUntil} from 'rxjs/operators';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-game-master',

@@ -1,8 +1,8 @@
 import {Injectable, OnDestroy} from '@angular/core';
-import {Game} from "../models/game";
-import {BehaviorSubject, Subject} from "rxjs";
-import {GameService} from "./game.service";
-import {takeUntil} from "rxjs/operators";
+import {Game} from '../models/game';
+import {BehaviorSubject, Subject} from 'rxjs';
+import {GameService} from './game.service';
+import {takeUntil} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'

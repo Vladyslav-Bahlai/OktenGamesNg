@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {ActivatedRouteSnapshot, Resolve, RouterStateSnapshot} from '@angular/router';
 import {Observable} from 'rxjs';
+import {Gamepad} from '../models/gamepad';
 import {GamepadService} from '../services/gamepad.service';
 
 @Injectable({

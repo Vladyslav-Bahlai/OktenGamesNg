@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import {DeviceResolverService} from './device-resolver.service';
 
-import { DeviceResolverService } from './device-resolver.service';
 
 describe('DeviceResolverService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));

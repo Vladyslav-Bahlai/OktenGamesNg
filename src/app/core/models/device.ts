@@ -1,4 +1,4 @@
-import {Game} from './game';
+
 import {Gamepad} from './gamepad';
 
 export class Device {
@@ -12,7 +12,6 @@ export class Device {
   capacity: string;
   conditionState: string;
   photosImgUrl: string[];
-  extraGames: Game[];
   gamepads: Gamepad[];
 
   constructor() {
