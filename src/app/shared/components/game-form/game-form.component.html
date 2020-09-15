@@ -49,41 +49,41 @@
       type="text" rows="10" cols="40"></textarea>
   </div>
 
-  <div>
-    Genres: <br>
+  <div class="genre-section">
+    <app-genres-table [parentForm]="reactiveFormGroup"></app-genres-table>
+  </div>
+
+  <div class="platform-section">
+    <label>Platforms:</label> <br>
     <div
-      #genreSelectionBtn
-      class="genreSelectionBtn"
-      (click)="toggleGenreSelectionMenu()"
+      formArrayName="platforms"
+      *ngFor="let platform of platformsFormArray.controls; let i = index"
     >
-      Add genres:
-      <div
-        #genreSelection
-        class="genreSelection"
-        *ngIf="isGenreSelectionVisible"
+      <input
+        type="checkbox"
+        [formControlName]="i"
       >
-        <ul>
-          <li
-            *ngFor="let genre of genresFormArray.controls; let i = index"
-          >
-            {{genresData[i].name}}</li>
-        </ul>
-      </div>
+      {{platformsData[i].name}}
     </div>
   </div>
 
-
-
-  <label>Platforms:</label> <br>
-  <div
-    formArrayName="platforms"
-    *ngFor="let platform of platformsFormArray.controls; let i = index"
-  >
-    <input
-      type="checkbox"
-      [formControlName]="i"
+  <div class="addons-section" formArrayName="additionalContent">
+    <button
+      class="add-addon-btn"
+      (click)="addAddonForm()"
     >
-    {{platformsData[i].name}}
+      Add Addon
+    </button>
+    <div
+      *ngFor="let addon of addonsFormArray.controls; let i = index"
+    >
+      <app-game-addon-form [formControlName]="i"></app-game-addon-form>
+      <button
+        (click)="removeAddonForm(i)"
+      >
+        Remove
+      </button>
+    </div>
   </div>
 
   <button (click)="registerForm()">Submit</button>

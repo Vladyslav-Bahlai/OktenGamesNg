@@ -1,32 +1,10 @@
-div {
-  margin: 15px 0;
-}
-
-
-
-.genreSelectionBtn {
-  display: inline-block;
-  position: relative;
-  background-color: aqua;
-  padding: 5px;
-
-  .genreSelection {
-    background: dodgerblue;
-    position: absolute;
-    margin: 0;
-    bottom: 0;
-    left: 100%;
-    ul {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      li {
-        text-align: center;
-        padding: 5px 15px;
-      }
-      li:hover {
-        background-color: cornflowerblue;
-      }
-    }
+form > div {
+    margin: 20px 0;
   }
+
+.platform-section > div {
+  margin: 10px 0;
 }
+
+
+

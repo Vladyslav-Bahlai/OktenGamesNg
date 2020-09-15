@@ -1,4 +1,5 @@
 import {Platform} from "./platform";
+import {Genre} from "./genre";
 
 export class Game {
   id: number;
@@ -8,10 +9,10 @@ export class Game {
   score: number;
   releaseDate: string;
   amount: number;
-  imgUrl: string;
+  titleImgUrl: string;
   description: string;
   screenShotsImgUrl: string[];
-  genres: string[];
+  genres: Genre[];
   platforms: Platform[];
   additionalContent: Game[];
 

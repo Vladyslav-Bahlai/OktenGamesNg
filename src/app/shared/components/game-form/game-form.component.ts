@@ -1,11 +1,11 @@
-import {Component, ElementRef, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {Game} from "../../../core/models/game";
 import {Platform} from "../../../core/models/platform";
-import {GameStorageService} from "../../../core/services/game-storage.service";
 import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
 import {GameService} from "../../../core/services/game.service";
+import {Genre} from "../../../core/models/genre";
 
 @Component({
   selector: 'app-game-form',
@@ -13,49 +13,15 @@ import {GameService} from "../../../core/services/game.service";
   styleUrls: ['./game-form.component.scss']
 })
 export class GameFormComponent implements OnInit, OnDestroy {
-  // gets reference to genres add button
-  @ViewChild('genreSelectionBtn', {static: false}) genreButton: ElementRef;
-  // this variable is being initialized through setter cause
-  // @ViewChild returns undefined when HTMLElement is invisible (*ngIf='false')
-  private genreSelectionMenu: ElementRef;
   private game: Game;
   private reactiveFormGroup: FormGroup;
   private platformsData: Platform[];
-  private genresData = [
-    {id: 1, name: 'RPG'},
-    {id: 2, name: 'Shooter'},
-    {id: 3, name: 'Sandbox'},
-    {id: 4, name: 'Adventure'},
-    {id: 5, name: 'Stealth'},
-    {id: 6, name: 'Platformer'},
-    {id: 7, name: 'Indie'},
-    {id: 8, name: 'Hardcore'},
-    {id: 9, name: 'Simulator'},
-    {id: 10, name: 'VR'},
-  ];
-  private isGenreSelectionVisible = false;
   private destroy$ = new Subject();
 
   constructor(
     private readonly formBuilder: FormBuilder,
     private gameService: GameService,
-    private gameStorage: GameStorageService,
-    private renderer: Renderer2
   ) {
-    // listens to clicks and hides genreSelectionMenu if user clicks outside the menu
-    this.renderer.listen('window', 'click', (e: Event) => {
-      if (!this.genreButton.nativeElement.contains(e.target) &&
-          this.genreSelectionMenu &&
-          !this.genreSelectionMenu.nativeElement.contains(e.target)
-      ) {
-        this.isGenreSelectionVisible = false;
-      }
-    });
-  }
-  // setter is used to get reference to genreSelectionMenu so when genres menu becomes visible (*ngIf='true')
-  // this setter is being automatically called and rewrites undefined value with actual reference
-  @ViewChild('genreSelection', {static: false}) set menu(menuElement: ElementRef) {
-    this.genreSelectionMenu = menuElement ? menuElement : undefined;
   }
 
   // getter for platforms control variable to write less code
@@ -63,9 +29,9 @@ export class GameFormComponent implements OnInit, OnDestroy {
     return this.reactiveFormGroup.controls.platforms as FormArray;
   }
 
-  // getter for platforms control variable to write less code
-  get genresFormArray() {
-    return this.reactiveFormGroup.controls.genres as FormArray;
+  // getter for addons control variable to write less code
+  get addonsFormArray() {
+    return this.reactiveFormGroup.controls.additionalContent as FormArray;
   }
 
   ngOnInit() {
@@ -75,28 +41,9 @@ export class GameFormComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((platforms) => {
         this.platformsData = platforms;
-        this.addCheckboxesToForm();
+        this.addPlatformsToForm();
       });
-    // this.gameService.getAllGenres()
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((genres) => {
-    //     this.genresData = genres;
-    //   });
     this.createForm();
-  }
-
-  registerForm() {
-    const platformsList = this.getFormPlatforms();
-    // collects all values from our form and cast it to Game object
-    this.game = Object.assign(new Game(), {...this.reactiveFormGroup.value, platforms: platformsList});
-    console.log(this.game);
-    // sends new game obj to server, then adds response game object to game storage service
-    this.gameService.addGame(this.game)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((game) => {
-        this.gameStorage.games$.value.push(game);
-        console.log(game);
-      });
   }
 
   clearForm() {
@@ -107,6 +54,52 @@ export class GameFormComponent implements OnInit, OnDestroy {
     this.destroy$.next();
   }
 
+  protected registerForm() {
+    // get genre and platform objects
+    const platformsList = this.getFormPlatforms();
+    const genreList = this.getFormGenres();
+    // collects all values from our form and cast it to Game object
+    this.game = Object.assign(new Game(), {
+      ...this.reactiveFormGroup.value,
+      platforms: platformsList,
+      genres: genreList
+    });
+    console.log(this.reactiveFormGroup);
+    console.log(this.game);
+    // sends new game obj to server, then adds response game object to game storage service
+    // this.gameService.addGame(this.game)
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((game) => {
+    //     this.gameStorage.games$.value.push(game);
+    //     console.log(game);
+    //   });
+  }
+
+  // to platformsList if this platform was checked in form
+  protected getFormPlatforms(): Platform[] {
+    const platformsList = this.reactiveFormGroup.value.platforms
+      .map((value, i) => value ? Object.assign(new Platform(), this.platformsData[i]) : null)
+      .filter(v => v !== null);
+    return platformsList;
+  }
+
+  // maps through list of boolean values in form platforms and adds platform object
+
+  // to platformsList if this platform was checked in form
+  protected getFormGenres(): Genre[] {
+    const genreList = this.reactiveFormGroup.value.genres
+      .map((value, i) => value ? Object.assign(new Genre(), this.platformsData[i]) : null)
+      .filter(v => v !== null);
+    return genreList;
+  }
+
+  // maps through list of boolean values in form platforms and adds platform object
+
+  // initialises checkboxes FormArray with false values so they all are unchecked by default
+  protected addPlatformsToForm() {
+    this.platformsData.forEach(() => this.platformsFormArray.push(new FormControl(false)));
+
+  }
 
   private createForm(): void {
     this.reactiveFormGroup = this.formBuilder.group({
@@ -120,27 +113,16 @@ export class GameFormComponent implements OnInit, OnDestroy {
       description: '',
       genres: new FormArray([]),
       platforms: new FormArray([]),
+      additionalContent: new FormArray([]),
     });
   }
 
-  // maps through list of boolean values in form platforms and adds platform object
-  // to platformsList if this platform was checked in form
-  private getFormPlatforms(): Platform[] {
-    const platformsList = this.reactiveFormGroup.value.platforms
-      .map((value, i) => value ? Object.assign(new Platform(), this.platformsData[i]) : null)
-      .filter(v => v !== null);
-
-    return platformsList;
+  private addAddonForm(): void {
+    this.addonsFormArray.push(new FormControl(''));
   }
 
-  // initialises checkboxes FormArray with false values so they all are unchecked
-  private addCheckboxesToForm() {
-    this.platformsData.forEach(() => this.platformsFormArray.push(new FormControl(false)));
-    this.genresData.forEach(() => this.genresFormArray.push(new FormControl(false)));
-  }
-
-  private toggleGenreSelectionMenu() {
-    this.isGenreSelectionVisible = true;
+  private removeAddonForm(index: number): void {
+    this.addonsFormArray.removeAt(index);
   }
 
 }
