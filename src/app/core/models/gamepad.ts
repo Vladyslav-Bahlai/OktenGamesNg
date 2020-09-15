@@ -1,11 +1,13 @@
+import {Color} from './color';
+
+
 export class Gamepad {
 
   id: number;
   title: string;
   price: number;
   amount: number;
-  color: string;
-  platform: string;
+  color: Color[];
 
   constructor() {
   }

@@ -1,11 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup} from "@angular/forms";
-import {Game} from "../../../core/models/game";
-import {Platform} from "../../../core/models/platform";
-import {takeUntil} from "rxjs/operators";
-import {Subject} from "rxjs";
-import {GameService} from "../../../core/services/game.service";
-import {Genre} from "../../../core/models/genre";
+import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {Game} from '../../../core/models/game';
+import {Platform} from '../../../core/models/platform';
+import {takeUntil} from 'rxjs/operators';
+import {Subject} from 'rxjs';
+import {GameService} from '../../../core/services/game.service';
+import {Genre} from '../../../core/models/genre';
 
 @Component({
   selector: 'app-game-form',

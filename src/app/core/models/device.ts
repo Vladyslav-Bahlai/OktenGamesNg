@@ -1,5 +1,4 @@
 
-import {Gamepad} from './gamepad';
 
 export class Device {
 
@@ -12,7 +11,7 @@ export class Device {
   capacity: string;
   conditionState: string;
   photosImgUrl: string[];
-  gamepads: Gamepad[];
+  gamepads: number;
 
   constructor() {
   }

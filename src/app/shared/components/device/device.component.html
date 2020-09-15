@@ -1,0 +1,23 @@
+<div>
+  <h1>Device info:</h1>
+  <p>id: {{ device?.id }}</p>
+  <p>title: {{ device?.title }}</p>
+  <p>amount: {{ device?.amount }}</p>
+  <p>price: {{ device?.price }}</p>
+  <p>imgUrl: {{ device?.imgUrl }}</p>
+  <p>color: {{ device?.color }}</p>
+  <p>color: {{ device?.capacity }}</p>
+  <p>color: {{ device?.conditionState }}</p>
+
+  <h3>photos:</h3>
+  <div *ngFor="let photos of device?.photosImgUrl">
+    <p>{{ photos }}</p>
+  </div>
+
+
+  <h3>gamepads: </h3>
+  <div *ngFor="let gamepads of device?.gamepads">
+    <p [routerLink]="['/devices/', gamepads?.id]">{{ gamepads?.title }}</p>
+  </div>
+
+</div>
