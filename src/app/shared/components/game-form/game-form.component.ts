@@ -6,6 +6,7 @@ import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
 import {GameService} from "../../../core/services/game.service";
 import {Genre} from "../../../core/models/genre";
+import {GameStorageService} from "../../../core/services/game-storage.service";
 
 @Component({
   selector: 'app-game-form',
@@ -21,6 +22,7 @@ export class GameFormComponent implements OnInit, OnDestroy {
   constructor(
     private readonly formBuilder: FormBuilder,
     private gameService: GameService,
+    private gameStorage: GameStorageService
   ) {
   }
 
@@ -46,10 +48,6 @@ export class GameFormComponent implements OnInit, OnDestroy {
     this.createForm();
   }
 
-  clearForm() {
-    this.reactiveFormGroup.reset();
-  }
-
   ngOnDestroy(): void {
     this.destroy$.next();
   }
@@ -64,41 +62,14 @@ export class GameFormComponent implements OnInit, OnDestroy {
       platforms: platformsList,
       genres: genreList
     });
-    console.log(this.reactiveFormGroup);
     console.log(this.game);
     // sends new game obj to server, then adds response game object to game storage service
-    // this.gameService.addGame(this.game)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((game) => {
-    //     this.gameStorage.games$.value.push(game);
-    //     console.log(game);
-    //   });
-  }
-
-  // to platformsList if this platform was checked in form
-  protected getFormPlatforms(): Platform[] {
-    const platformsList = this.reactiveFormGroup.value.platforms
-      .map((value, i) => value ? Object.assign(new Platform(), this.platformsData[i]) : null)
-      .filter(v => v !== null);
-    return platformsList;
-  }
-
-  // maps through list of boolean values in form platforms and adds platform object
-
-  // to platformsList if this platform was checked in form
-  protected getFormGenres(): Genre[] {
-    const genreList = this.reactiveFormGroup.value.genres
-      .map((value, i) => value ? Object.assign(new Genre(), this.platformsData[i]) : null)
-      .filter(v => v !== null);
-    return genreList;
-  }
-
-  // maps through list of boolean values in form platforms and adds platform object
-
-  // initialises checkboxes FormArray with false values so they all are unchecked by default
-  protected addPlatformsToForm() {
-    this.platformsData.forEach(() => this.platformsFormArray.push(new FormControl(false)));
-
+    this.gameService.addGame(this.game)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((game) => {
+        this.gameStorage.games$.value.push(game);
+        console.log(game);
+      });
   }
 
   private createForm(): void {
@@ -117,12 +88,40 @@ export class GameFormComponent implements OnInit, OnDestroy {
     });
   }
 
+  // maps through list of boolean values in form platforms and adds platform object
+  // to platformsList if this platform was checked in form
+  protected getFormPlatforms(): Platform[] {
+    const platformsList = this.reactiveFormGroup.value.platforms
+      .map((value, i) => value ? Object.assign(new Platform(), this.platformsData[i]) : null)
+      .filter(v => v !== null);
+    return platformsList;
+  }
+
+  // maps through list of boolean values in form platforms and adds platform object
+  // to platformsList if this platform was checked in form
+  protected getFormGenres(): Genre[] {
+    const genreList = this.reactiveFormGroup.value.genres
+      .map((value, i) => value ? Object.assign(new Genre(), this.platformsData[i]) : null)
+      .filter(v => v !== null);
+    return genreList;
+  }
+
+  // initialises checkboxes FormArray with false values so they all are unchecked by default
+  protected addPlatformsToForm() {
+    this.platformsData.forEach(() => this.platformsFormArray.push(new FormControl(false)));
+
+  }
+
   private addAddonForm(): void {
     this.addonsFormArray.push(new FormControl(''));
   }
 
   private removeAddonForm(index: number): void {
     this.addonsFormArray.removeAt(index);
+  }
+
+  clearForm() {
+    this.reactiveFormGroup.reset();
   }
 
 }

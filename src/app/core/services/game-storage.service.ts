@@ -17,6 +17,7 @@ export class GameStorageService implements OnDestroy {
     this.gameService.getAllGames()
       .pipe(takeUntil(this.destroy$))
       .subscribe((games) => {
+        console.log(games);
         this.games$.next(games);
       });
   }

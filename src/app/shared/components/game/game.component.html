@@ -28,14 +28,8 @@
   <div *ngIf="game?.additionalContent.length > 0">
     <h3>additionalContent:</h3>
     <div *ngFor="let dlcGame of game?.additionalContent">
-      <p [routerLink]="['/games/', dlcGame?.id]">{{ dlcGame?.title }}</p>
+      <p [routerLink]="['/addons', dlcGame?.id]">{{ dlcGame?.title }}</p>
     </div>
   </div>
-
-
-  <!--<div>-->
-    <!--<h3>Main game:</h3>-->
-    <!--<p [routerLink]="['/games/', game?.mainGame.id]">{{ game?.mainGame }}</p>-->
-  <!--</div>-->
 
 </div>

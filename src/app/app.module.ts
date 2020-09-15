@@ -11,6 +11,7 @@ import { GameFormComponent } from './shared/components/game-form/game-form.compo
 import {ReactiveFormsModule} from "@angular/forms";
 import { GameAddonFormComponent } from './shared/components/game-addon-form/game-addon-form.component';
 import { GenresTableComponent } from './shared/components/genres-table/genres-table.component';
+import { GameAddonComponent } from './shared/components/game-addon/game-addon.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { GenresTableComponent } from './shared/components/genres-table/genres-ta
     GameFormComponent,
     GameAddonFormComponent,
     GenresTableComponent,
+    GameAddonComponent,
   ],
   imports: [
     BrowserModule,
