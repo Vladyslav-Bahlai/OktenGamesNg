@@ -1,0 +1,4 @@
+<h1>Devices:</h1>
+<div *ngFor="let device of devicesList">
+  <a (click)="navigateToDevice(device)">{{device.title}}</a>
+</div>

@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Game} from "../models/game";
-import {Platform} from "../models/platform";
-import {Genre} from "../models/genre";
+import {Game} from '../models/game';
+import {Platform} from '../models/platform';
+import {Genre} from '../models/genre';
 
 @Injectable({
   providedIn: 'root'
