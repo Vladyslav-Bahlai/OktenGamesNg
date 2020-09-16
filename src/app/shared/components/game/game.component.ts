@@ -27,7 +27,6 @@ export class GameComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((params) => {
         this.game = this.getGameFromStorageById(+params.id);
-        console.log(this.game);
       });
   }
 

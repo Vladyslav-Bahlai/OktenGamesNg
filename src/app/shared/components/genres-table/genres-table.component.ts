@@ -1,9 +1,9 @@
 import {Component, ElementRef, Input, OnDestroy, OnInit, Renderer2, ViewChild} from '@angular/core';
 import {Genre} from "../../../core/models/genre";
-import {takeUntil} from "rxjs/operators";
 import {GameService} from "../../../core/services/game.service";
-import {Subject} from "rxjs";
+import {BehaviorSubject, Subject} from "rxjs";
 import {FormArray, FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {takeUntil, takeWhile} from "rxjs/operators";
 
 @Component({
   selector: 'app-genres-table',
@@ -18,10 +18,11 @@ export class GenresTableComponent implements OnInit, OnDestroy {
   // this variable is being initialized through setter cause
   // @ViewChild returns undefined when HTMLElement is invisible (*ngIf='false')
   private genreSelectionMenu: ElementRef;
-  private genresData: Genre[];
   // stores values which genre was selected in form because idk how to implement it inside form
   private selectedGenres = [];
   private isGenreSelectionVisible = false;
+  // observable is used to notify other parts of the component that data from server has been received
+  private genresData$ = new BehaviorSubject<Genre[]>([]);
   private destroy$ = new Subject();
 
   constructor(
@@ -40,6 +41,16 @@ export class GenresTableComponent implements OnInit, OnDestroy {
     });
   }
 
+  // @Input is used on setter to set a new value to genresData$ when data has been received from server
+  @Input()
+  set genresData(value: Genre[]) {
+    this.genresData$.next(value);
+  }
+
+  get genresData() {
+    return this.genresData$.getValue();
+  }
+
   // setter is used to get reference to genreSelectionMenu so when genres menu becomes visible (*ngIf='true')
   // this setter is being automatically called and rewrites undefined value with actual reference
   @ViewChild('genreSelection', {static: false}) set menu(menuElement: ElementRef) {
@@ -52,13 +63,12 @@ export class GenresTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.gameService.getAllGenres()
+    // fillGenresArray() method will be called only when data change in genresData$ occurs
+    this.genresData$
       .pipe(takeUntil(this.destroy$))
-      .subscribe((genres) => {
-        this.genresData = genres;
+      .subscribe(() => {
         this.fillGenresArray();
       });
-
   }
 
   ngOnDestroy(): void {

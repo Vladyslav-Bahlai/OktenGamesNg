@@ -16,7 +16,8 @@ import {GameStorageService} from "../../../core/services/game-storage.service";
 export class GameFormComponent implements OnInit, OnDestroy {
   private game: Game;
   private reactiveFormGroup: FormGroup;
-  private platformsData: Platform[];
+  private platformsData: Platform[] = [];
+  private genresData: Genre[] = [];
   private destroy$ = new Subject();
 
   constructor(
@@ -45,6 +46,11 @@ export class GameFormComponent implements OnInit, OnDestroy {
         this.platformsData = platforms;
         this.addPlatformsToForm();
       });
+    this.gameService.getAllGenres()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((genres) => {
+        this.genresData = genres;
+      });
     this.createForm();
   }
 
@@ -64,12 +70,12 @@ export class GameFormComponent implements OnInit, OnDestroy {
     });
     console.log(this.game);
     // sends new game obj to server, then adds response game object to game storage service
-    this.gameService.addGame(this.game)
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((game) => {
-        this.gameStorage.games$.value.push(game);
-        console.log(game);
-      });
+    // this.gameService.addGame(this.game)
+    //   .pipe(takeUntil(this.destroy$))
+    //   .subscribe((game) => {
+    //     this.gameStorage.games$.value.push(game);
+    //     console.log(game);
+    //   });
   }
 
   private createForm(): void {
@@ -101,7 +107,7 @@ export class GameFormComponent implements OnInit, OnDestroy {
   // to platformsList if this platform was checked in form
   protected getFormGenres(): Genre[] {
     const genreList = this.reactiveFormGroup.value.genres
-      .map((value, i) => value ? Object.assign(new Genre(), this.platformsData[i]) : null)
+      .map((value, i) => value ? Object.assign(new Genre(), this.genresData[i]) : null)
       .filter(v => v !== null);
     return genreList;
   }

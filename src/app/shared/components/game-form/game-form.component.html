@@ -50,7 +50,11 @@
   </div>
 
   <div class="genre-section">
-    <app-genres-table [parentForm]="reactiveFormGroup"></app-genres-table>
+    <app-genres-table
+      [parentForm]="reactiveFormGroup"
+      [genresData]="genresData"
+    >
+    </app-genres-table>
   </div>
 
   <div class="platform-section">
