@@ -1,3 +1,4 @@
+import {ConditionState} from './conditionState';
 
 
 export class Device {
@@ -7,11 +8,11 @@ export class Device {
   imgUrl: string;
   price: number;
   amount: number;
-  color: string;
-  capacity: string;
-  conditionState: string;
-  photosImgUrl: string[];
+  // color: string;
+  // capacity: string;
   gamepads: number;
+  conditionStates: ConditionState[];
+  // photosImgUrl: string[];
 
   constructor() {
   }

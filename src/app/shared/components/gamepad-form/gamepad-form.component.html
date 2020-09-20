@@ -27,11 +27,11 @@
       formArrayName="colors"
       *ngFor="let color of colorsFormArray.controls; let i = index"
     >
-      <input
-        type="checkbox"
-        [formControlName]="i"
-      >
-      {{colorsData[i].name}}
+        <input
+          type="checkbox"
+          [formControlName]="i"
+        >
+        {{colorsData[i].name}}
     </div>
   </div>
 

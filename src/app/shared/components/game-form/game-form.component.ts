@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormArray, FormBuilder, FormControl, FormGroup, FormsModule} from "@angular/forms";
 import {Game} from "../../../core/models/game";
 import {Platform} from "../../../core/models/platform";
 import {takeUntil} from "rxjs/operators";
@@ -70,12 +70,12 @@ export class GameFormComponent implements OnInit, OnDestroy {
     });
     console.log(this.game);
     // sends new game obj to server, then adds response game object to game storage service
-    // this.gameService.addGame(this.game)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((game) => {
-    //     this.gameStorage.games$.value.push(game);
-    //     console.log(game);
-    //   });
+    this.gameService.addGame(this.game)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((game) => {
+        this.gameStorage.games$.value.push(game);
+        console.log(game);
+      });
   }
 
   private createForm(): void {

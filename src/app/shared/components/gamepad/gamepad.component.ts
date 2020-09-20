@@ -2,7 +2,6 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Gamepad} from '../../../core/models/gamepad';
 import {Subject} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
-import {GamepadService} from '../../../core/services/gamepad.service';
 import {takeUntil} from 'rxjs/operators';
 import {GamepadStorageService} from '../../../core/services/gamepad-storage.service';
 

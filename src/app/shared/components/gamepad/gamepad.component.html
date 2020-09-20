@@ -4,6 +4,9 @@
   <p>title: {{ gamepad.title}}</p>
   <p>amount: {{ gamepad.amount }}</p>
   <p>price: {{ gamepad.price }}</p>
-  <p>score: {{ gamepad.color}}</p>
+  <h3>color:</h3>
+  <div *ngFor="let color of gamepad?.colors">
+    <p>{{ color.name }}</p>
+  </div>
 </div>
 

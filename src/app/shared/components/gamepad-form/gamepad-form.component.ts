@@ -5,6 +5,8 @@ import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {Color} from '../../../core/models/color';
+import {GamepadStorageService} from '../../../core/services/gamepad-storage.service';
+
 
 @Component({
   selector: 'app-gamepad-form',
@@ -15,13 +17,13 @@ export class GamepadFormComponent implements OnInit, OnDestroy {
 
   private gamepad: Gamepad;
   private reactiveFormGroup: FormGroup;
-  private colorsData: Color[];
+  private colorsData: Color[] = [];
   private destroy$ = new Subject();
 
-
   constructor(
+    private readonly formBuilder: FormBuilder,
     private gamepadService: GamepadService,
-    private readonly formBuilder: FormBuilder
+    private gamepadStorageService: GamepadStorageService
   ) {
   }
 
@@ -34,45 +36,29 @@ export class GamepadFormComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe((colors) => {
         this.colorsData = colors;
-        this.addColorToForm();
+        this.addColorsToForm();
       });
     this.createForm();
   }
 
-  clearForm() {
-    this.reactiveFormGroup.reset();
-  }
   ngOnDestroy(): void {
     this.destroy$.next();
   }
 
   protected registerForm() {
-    const colorsList = this.getFormColor();
+    const colorsList = this.getFormColors();
     this.gamepad = Object.assign(new Gamepad(), {
       ...this.reactiveFormGroup.value,
       colors: colorsList
     });
-    console.log(this.reactiveFormGroup);
     console.log(this.gamepad);
 
-    // sends new game obj to server, then adds response game object to game storage service
-    // this.gamepadService.addGamepad(this.gamepad)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((gamepad) => {
-    //     this.gamepadStorageService.gamepads$.value.push(gamepad);
-    //     console.log(gamepad);
-    //   });
-  }
-
-  protected getFormColor(): Color[] {
-    const colorsList = this.reactiveFormGroup.value.colors
-      .map((value, i) => value ? Object.assign(new Color(), this.colorsData[i]) : null)
-      .filter(v => v !== null);
-    return colorsList;
-  }
-  protected addColorToForm() {
-    this.colorsData.forEach(() => this.colorsFormArray.push(new FormControl(false)));
-
+    this.gamepadService.addGamepad(this.gamepad)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((gamepad) => {
+        this.gamepadStorageService.gamepads$.value.push(gamepad);
+        console.log(gamepad);
+      });
   }
 
   private createForm(): void {
@@ -80,7 +66,21 @@ export class GamepadFormComponent implements OnInit, OnDestroy {
       title: '',
       price: '',
       amount: '',
-      color: new FormArray([]),
+      colors: new FormArray([]),
     });
+  }
+
+  protected getFormColors(): Color[] {
+    const colorsList = this.reactiveFormGroup.value.colors
+      .map((value, i) => value ? Object.assign(new Color(), this.colorsData[i]) : null)
+      .filter(v => v !== null);
+    return colorsList;
+    //   .map((value, i) => value ? Object.assign(new Color(), this.colorsData[i]) : null)
+    //   .filter(v => v !== null);
+    // return colorsList;
+  }
+
+  protected addColorsToForm() {
+    this.colorsData.forEach(() => this.colorsFormArray.push(new FormControl(false)));
   }
 }

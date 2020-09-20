@@ -20,7 +20,7 @@ export class GamepadService {
   }
 
   addGamepad(gamepad: Gamepad): Observable<Gamepad> {
-    return this.httpClient.post<Gamepad>('http://localhost:8080/gamepads/add-gamepads', gamepad);
+    return this.httpClient.post<Gamepad>('http://localhost:8080/gamepads/add-gamepad', gamepad);
   }
 
   public getColor(): Observable<Color[]> {

@@ -16,6 +16,7 @@ import { GameAddonFormComponent } from './shared/components/game-addon-form/game
 import { GenresTableComponent } from './shared/components/genres-table/genres-table.component';
 import { GameAddonComponent } from './shared/components/game-addon/game-addon.component';
 import { GamepadFormComponent } from './shared/components/gamepad-form/gamepad-form.component';
+import { DeviceFormComponent } from './shared/components/device-form/device-form.component';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { GamepadFormComponent } from './shared/components/gamepad-form/gamepad-f
     GenresTableComponent,
     GameAddonComponent,
     GamepadFormComponent,
+    DeviceFormComponent,
   ],
   imports: [
     BrowserModule,
