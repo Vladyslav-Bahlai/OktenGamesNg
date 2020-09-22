@@ -7,7 +7,7 @@ export class Gamepad {
   title: string;
   price: number;
   amount: number;
-  color: Color[];
+  colors: Color[];
 
   constructor() {
   }

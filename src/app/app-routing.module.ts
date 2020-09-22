@@ -9,6 +9,7 @@ import {DeviceMasterComponent} from './shared/components/device-master/device-ma
 import {DeviceComponent} from './shared/components/device/device.component';
 import {GamepadComponent} from './shared/components/gamepad/gamepad.component';
 import {GamepadFormComponent} from './shared/components/gamepad-form/gamepad-form.component';
+import {DeviceFormComponent} from './shared/components/device-form/device-form.component';
 
 
 const routes: Routes = [
@@ -25,14 +26,16 @@ const routes: Routes = [
     component: GameAddonComponent,
   },
   {
-    // add guards to restrict permission for regular users
     path: 'forms/add-game',
     component: GameFormComponent
   },
   {
-    // add guards to restrict permission for regular users
     path: 'forms/add-gamepad',
     component: GamepadFormComponent
+  },
+  {
+    path: 'forms/add-device',
+    component: DeviceFormComponent
   },
   {
     path: 'gamepads',
@@ -56,4 +59,5 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {
+}

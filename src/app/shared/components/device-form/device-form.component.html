@@ -1,0 +1,46 @@
+<h1>Device form</h1>
+<form [formGroup]="reactiveFormGroup">
+  <div>
+    Device title: <br>
+    <input
+      formControlName="title"
+      type="text"
+    >
+  </div>
+  <div>
+    Price: <br>
+    <input
+      formControlName="price"
+      type="number"
+    >
+  </div>
+  <div>
+    Amount: <br>
+    <input
+      formControlName="amount"
+      type="number"
+    >
+  </div>
+  <div>
+    Gamepads: <br>
+    <input
+      formControlName="gamepads"
+      type="number"
+    >
+  </div>
+  <div>
+    <label>Condition State:</label> <br>
+    <div
+      formArrayName="conditionStates"
+      *ngFor="let conditionState of conditionStatesFormArray.controls; let i = index"
+    >
+      <input
+        type="checkbox"
+        [formControlName]="i"
+      >
+        {{conditionStatesData[i].name}}
+    </div>
+  </div>
+
+  <button (click)="registerForm()">Submit</button>
+</form>

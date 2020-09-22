@@ -5,19 +5,15 @@
   <p>amount: {{ device?.amount }}</p>
   <p>price: {{ device?.price }}</p>
   <p>imgUrl: {{ device?.imgUrl }}</p>
-  <p>color: {{ device?.color }}</p>
-  <p>color: {{ device?.capacity }}</p>
-  <p>color: {{ device?.conditionState }}</p>
+  <p>gamepads: {{ device?.gamepads }}</p>
 
-  <h3>photos:</h3>
-  <div *ngFor="let photos of device?.photosImgUrl">
-    <p>{{ photos }}</p>
-  </div>
+<!--  <h3>photos:</h3>-->
+<!--  <div *ngFor="let photos of device?.photosImgUrl">-->
+<!--    <p>{{ photos }}</p>-->
+<!--  </div>-->
 
-
-  <h3>gamepads: </h3>
-  <div *ngFor="let gamepads of device?.gamepads">
-    <p [routerLink]="['/devices/', gamepads?.id]">{{ gamepads?.title }}</p>
+  <div *ngFor="let conditionStates of device?.conditionStates">
+    <p>Condition state: {{ conditionStates.name }}</p>
   </div>
 
 </div>
