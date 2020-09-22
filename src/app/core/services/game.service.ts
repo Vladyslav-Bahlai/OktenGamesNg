@@ -21,8 +21,8 @@ export class GameService {
     return this.httpClient.get<Game>('http://localhost:8080/games/get/' + id);
   }
 
-  public addGame(game: Game): Observable<Game> {
-    return this.httpClient.post<Game>('http://localhost:8080/games/add', game);
+  public addGameFormData(formData: FormData): Observable<Game> {
+    return this.httpClient.post<Game>('http://localhost:8080/games/add', formData);
   }
 
   public getAllPlatforms(): Observable<Platform[]> {

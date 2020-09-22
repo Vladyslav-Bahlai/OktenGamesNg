@@ -1,4 +1,7 @@
 <h1>Games:</h1>
-<div *ngFor="let game of gamesList">
+<div
+  class="game-list"
+  *ngFor="let game of gamesList"
+>
   <a (click)="navigateToGame(game)">{{game.title}}</a>
 </div>

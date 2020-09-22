@@ -1,5 +1,5 @@
 <h1>Game form</h1>
-<form [formGroup]="reactiveFormGroup">
+<form [formGroup]="reactiveFormGroup" (ngSubmit)="registerForm()">
   <div>
     Game title: <br>
     <input
@@ -49,6 +49,8 @@
       type="text" rows="10" cols="40"></textarea>
   </div>
 
+  <app-images-uploader (filesEmitter)="updateSelectedFiles($event)"></app-images-uploader>
+
   <div class="genre-section">
     <app-genres-table
       [parentForm]="reactiveFormGroup"
@@ -81,7 +83,9 @@
     <div
       *ngFor="let addon of addonsFormArray.controls; let i = index"
     >
-      <app-game-addon-form [formControlName]="i"></app-game-addon-form>
+      <app-game-addon-form
+        [formControlName]="i"
+      ></app-game-addon-form>
       <button
         (click)="removeAddonForm(i)"
       >
@@ -90,6 +94,6 @@
     </div>
   </div>
 
-  <button (click)="registerForm()">Submit</button>
+  <button type="submit">Submit</button>
 
 </form>

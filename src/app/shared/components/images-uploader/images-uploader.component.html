@@ -1,0 +1,34 @@
+<p>File selector:</p>
+<div class="upload-btn-wrapper">
+  <button class="upload-btn">Upload an image</button>
+  <input type="file" multiple (change)="onFileSelect($event)">
+</div>
+
+<div
+  *ngIf="selectedFiles.length"
+  class="files-card"
+>
+  <div class="files-card-header card-row">
+    List of selected files
+  </div>
+  <div
+    *ngFor="let file of selectedFiles; let i = index"
+    class="files-card-item card-row"
+  >
+    <div class="files-image-column">
+      <div
+        class="image-preview-box"
+      >
+        <img [src]="imageUrls[i]" alt="preview" class="image-preview-item">
+      </div>
+    </div>
+    <div class="files-name-column">
+      {{ file.name }}
+    </div>
+
+    <div class="click-area" (click)="removeFile(i)">
+      <div class="remove-file-icon"></div>
+    </div>
+  </div>
+</div>
+

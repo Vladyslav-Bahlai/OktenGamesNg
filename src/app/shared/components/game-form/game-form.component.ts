@@ -18,6 +18,7 @@ export class GameFormComponent implements OnInit, OnDestroy {
   private reactiveFormGroup: FormGroup;
   private platformsData: Platform[] = [];
   private genresData: Genre[] = [];
+  private selectedFiles: File[] = [];
   private destroy$ = new Subject();
 
   constructor(
@@ -58,24 +59,19 @@ export class GameFormComponent implements OnInit, OnDestroy {
     this.destroy$.next();
   }
 
-  protected registerForm() {
-    // get genre and platform objects
-    const platformsList = this.getFormPlatforms();
-    const genreList = this.getFormGenres();
-    // collects all values from our form and cast it to Game object
-    this.game = Object.assign(new Game(), {
-      ...this.reactiveFormGroup.value,
-      platforms: platformsList,
-      genres: genreList
-    });
-    console.log(this.game);
-    // sends new game obj to server, then adds response game object to game storage service
-    // this.gameService.addGame(this.game)
-    //   .pipe(takeUntil(this.destroy$))
-    //   .subscribe((game) => {
-    //     this.gameStorage.games$.value.push(game);
-    //     console.log(game);
-    //   });
+  private registerForm() {
+    // gameFormData object which will be sent to server
+    const gameFormData = this.collectFormData();
+    // sends gameFormData obj to server, then adds response game object to game storage service
+    this.gameService.addGameFormData(gameFormData)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(
+        (game) => {
+          this.gameStorage.games$.value.push(game);
+          console.log(game);
+        },
+        (error) => console.log(error)
+      );
   }
 
   private createForm(): void {
@@ -86,12 +82,44 @@ export class GameFormComponent implements OnInit, OnDestroy {
       score: '',
       releaseDate: '',
       amount: '',
-      imgUrl: '',
       description: '',
       genres: new FormArray([]),
       platforms: new FormArray([]),
       additionalContent: new FormArray([]),
     });
+  }
+
+  // adds all form info to formData obj and returns it
+  private collectFormData(): FormData {
+    const formData = new FormData();
+
+    // get arrays of selected genres and platforms
+    const platformsList = this.getFormPlatforms();
+    const genreList = this.getFormGenres();
+
+    // collects all values from our reactive form and cast it to Game object
+    this.game = Object.assign(new Game(), {
+      ...this.reactiveFormGroup.value,
+      platforms: platformsList,
+      genres: genreList
+    });
+
+    // add each selected file to 'files' field in formData
+    this.selectedFiles.forEach((file: File) => {
+      formData.append('files', file);
+    });
+
+    // it seems that adding JSON objects as blobs to formData is the easiest approach
+    // cuz they can be easily casted to Java object on the server
+    const blobGame = new Blob([JSON.stringify(this.game)], {type: 'application/json'});
+    formData.append('game', blobGame);
+
+    return formData;
+  }
+
+  // gets updated selected files from child component and rewrites selectedFiles array
+  private updateSelectedFiles(files: File[]): void {
+    this.selectedFiles = files;
   }
 
   // maps through list of boolean values in form platforms and adds platform object
