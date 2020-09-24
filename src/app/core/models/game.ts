@@ -10,6 +10,7 @@ export class Game {
   releaseDate: string;
   amount: number;
   description: string;
+  screenShotsImgUrl: string[]
   genres: Genre[];
   platforms: Platform[];
   additionalContent: Game[];

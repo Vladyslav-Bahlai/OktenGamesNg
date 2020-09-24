@@ -4,6 +4,7 @@ import {ActivatedRoute} from "@angular/router";
 import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {GameStorageService} from "../../../core/services/game-storage.service";
+import {GameService} from "../../../core/services/game.service";
 
 @Component({
   selector: 'app-game',
@@ -17,16 +18,18 @@ export class GameComponent implements OnInit, OnDestroy {
 
   constructor(
     private gameStorage: GameStorageService,
+    private gameService: GameService,
     private route: ActivatedRoute
   ) {
 
   }
 
   ngOnInit() {
+    // listens to changes in url params
     this.route.params
       .pipe(takeUntil(this.destroy$))
       .subscribe((params) => {
-        this.game = this.getGameFromStorageById(+params.id);
+        this.setGameFromStorageById(+params.id);
       });
   }
 
@@ -34,9 +37,18 @@ export class GameComponent implements OnInit, OnDestroy {
     this.destroy$.next();
   }
 
-  private getGameFromStorageById(id: number): Game {
-    const gameById = this.gameStorage.games$.value.find(game => game.id === id);
-    return gameById as Game;
-  }
+  // gets game from storage by id, if no game was found, sends request for single game to server
+  private setGameFromStorageById(id: number) {
+    this.game = this.gameStorage.games$.getValue()
+      .find(game => game.id === id);
 
+    if (this.game === undefined) {
+      this.gameService.getGameById(id.toString())
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(data => {
+          console.log(data);
+          this.game = data;
+        });
+    }
+  }
 }

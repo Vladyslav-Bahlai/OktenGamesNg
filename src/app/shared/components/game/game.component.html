@@ -10,11 +10,6 @@
   <p>releaseDate: {{ game?.releaseDate }}</p>
   <p>company: {{ game?.company }}</p>
 
-  <!--<h3>screenShotsImgUrl:</h3>-->
-  <!--<div *ngFor="let url of game.screenShotsImgUrl">-->
-    <!--<p>{{ url }}</p>-->
-  <!--</div>-->
-
   <h3>genres:</h3>
   <div *ngFor="let genre of game?.genres">
     <p>{{ genre.name }}</p>
@@ -23,6 +18,13 @@
   <h3>platforms:</h3>
   <div *ngFor="let platform of game?.platforms">
     <p>{{ platform.name }}</p>
+  </div>
+
+  <div>
+    <h3>photos:</h3>
+    <div *ngFor="let imgUrl of game?.screenShotsImgUrl">
+      <img [src]="'/screenShots/' + imgUrl" alt="screenShot">
+    </div>
   </div>
 
   <div *ngIf="game?.additionalContent.length > 0">
