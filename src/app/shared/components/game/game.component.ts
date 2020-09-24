@@ -5,6 +5,7 @@ import {Subject} from "rxjs";
 import {takeUntil} from "rxjs/operators";
 import {GameStorageService} from "../../../core/services/game-storage.service";
 import {GameService} from "../../../core/services/game.service";
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-game',
@@ -15,11 +16,12 @@ export class GameComponent implements OnInit, OnDestroy {
 
   game: Game;
   destroy$ = new Subject();
+  env =  environment;
 
   constructor(
     private gameStorage: GameStorageService,
     private gameService: GameService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
 
   }
@@ -46,7 +48,7 @@ export class GameComponent implements OnInit, OnDestroy {
       this.gameService.getGameById(id.toString())
         .pipe(takeUntil(this.destroy$))
         .subscribe(data => {
-          console.log(data);
+
           this.game = data;
         });
     }

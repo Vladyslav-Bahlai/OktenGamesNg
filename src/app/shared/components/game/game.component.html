@@ -5,7 +5,6 @@
   <p>amount: {{ game?.amount }}</p>
   <p>price: {{ game?.price }}</p>
   <p>score: {{ game?.score }}</p>
-  <p>imgUrl: {{ game?.imgUrl }}</p>
   <p>description: {{ game?.description }}</p>
   <p>releaseDate: {{ game?.releaseDate }}</p>
   <p>company: {{ game?.company }}</p>
@@ -23,7 +22,7 @@
   <div>
     <h3>photos:</h3>
     <div *ngFor="let imgUrl of game?.screenShotsImgUrl">
-      <img [src]="'/screenShots/' + imgUrl" alt="screenShot">
+      <img [src]="env.imgPath + imgUrl" alt="screenShot">
     </div>
   </div>
 
