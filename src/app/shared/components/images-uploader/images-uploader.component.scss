@@ -34,9 +34,16 @@
 
 .card-row {
   padding: 20px 15px;
-  background-color: white;
   border-bottom: 2px solid grey;
   font-size: 18px;
+}
+
+.card-title {
+  background-color: lightgreen;
+}
+
+.card-screenShot {
+  background-color: white;
 }
 
 .files-card-item {
@@ -58,8 +65,17 @@
   }
 
   .files-name-column {
+    display: flex;
     vertical-align: center;
+
+    p {
+      margin: 0 5px;
+    }
   }
+}
+
+.hint {
+  font-size: 18px;
 }
 
 .files-card-header {

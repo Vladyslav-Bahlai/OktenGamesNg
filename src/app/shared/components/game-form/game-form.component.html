@@ -1,5 +1,5 @@
 <h1>Game form</h1>
-<form [formGroup]="reactiveFormGroup" (ngSubmit)="registerForm()">
+<form [formGroup]="reactiveFormGroup">
   <div>
     Game title: <br>
     <input
@@ -85,6 +85,7 @@
     >
       <app-game-addon-form
         [formControlName]="i"
+        (filesEventEmitter)="updateAddonsSelectedFiles($event, i)"
       ></app-game-addon-form>
       <button
         (click)="removeAddonForm(i)"
@@ -94,6 +95,6 @@
     </div>
   </div>
 
-  <button type="submit">Submit</button>
+  <button (click)="registerForm()">Submit</button>
 
 </form>

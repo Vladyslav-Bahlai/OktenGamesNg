@@ -7,6 +7,7 @@ export class GameBase {
   releaseDate: string;
   amount: number;
   description: string;
+  titleImgUrl: string;
   screenShotsImgUrl: string[];
 
   constructor() {

@@ -4,31 +4,34 @@
   <input type="file" multiple (change)="onFileSelect($event)">
 </div>
 
-<div
-  *ngIf="selectedFiles.length"
-  class="files-card"
->
-  <div class="files-card-header card-row">
-    List of selected files
-  </div>
-  <div
-    *ngFor="let file of selectedFiles; let i = index"
-    class="files-card-item card-row"
-  >
-    <div class="files-image-column">
-      <div
-        class="image-preview-box"
-      >
-        <img [src]="imageUrls[i]" alt="preview" class="image-preview-item">
+<div *ngIf="selectedFiles.length">
+  <div class="files-card">
+    <div class="files-card-header card-row">
+      List of selected files
+    </div>
+    <div
+      *ngFor="let imageObj of selectedFiles; let i = index"
+      [ngClass]="[imageObj.isTitle ? 'card-title' : 'card-screenShot', 'card-row', 'files-card-item']"
+      (dblclick)="onDoubleClick(i)"
+    >
+      <div class="files-image-column">
+        <div
+          class="image-preview-box"
+        >
+          <img [src]="imageUrls[i]" alt="preview" class="image-preview-item">
+        </div>
+      </div>
+      <div class="files-name-column">
+        <p>{{ imageObj.file.name }}</p>
+        <p *ngIf="imageObj.isTitle">(Title image)</p>
+      </div>
+
+      <div class="click-area" (click)="removeFile(i)">
+        <div class="remove-file-icon"></div>
       </div>
     </div>
-    <div class="files-name-column">
-      {{ file.name }}
-    </div>
-
-    <div class="click-area" (click)="removeFile(i)">
-      <div class="remove-file-icon"></div>
-    </div>
   </div>
+  <p class="hint">HINT: double click on the row to select new title image</p>
 </div>
+
 

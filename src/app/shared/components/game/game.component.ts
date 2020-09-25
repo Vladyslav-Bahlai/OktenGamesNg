@@ -48,7 +48,7 @@ export class GameComponent implements OnInit, OnDestroy {
       this.gameService.getGameById(id.toString())
         .pipe(takeUntil(this.destroy$))
         .subscribe(data => {
-
+          console.log(data);
           this.game = data;
         });
     }
