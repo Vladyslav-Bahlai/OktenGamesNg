@@ -2,9 +2,51 @@ form > div {
   margin: 20px 0;
 }
 
+form {
+  padding: 10px;
+}
+
 .platform-section > div {
   margin: 10px 0;
 }
+
+.addon-form-wrapper {
+  position: relative;
+  border: 2px solid green;
+  border-radius: 8px;
+  width: 70%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.remove-file-icon {
+  position: absolute;
+  right: 5%;
+  top: 2%;
+  opacity: 0.3;
+}
+
+.remove-file-icon:hover {
+  opacity: 1;
+}
+
+.remove-file-icon:before, .remove-file-icon:after {
+  position: absolute;
+  left: 15px;
+  content: ' ';
+  height: 20px;
+  width: 2px;
+  background-color: #333;
+}
+
+.remove-file-icon:before {
+  transform: rotate(45deg);
+}
+
+.remove-file-icon:after {
+  transform: rotate(-45deg);
+}
+
 
 
 

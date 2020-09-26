@@ -74,25 +74,26 @@
   </div>
 
   <div class="addons-section" formArrayName="additionalContent">
-    <button
-      class="add-addon-btn"
-      (click)="addAddonForm()"
-    >
-      Add Addon
-    </button>
     <div
+      class="addon-form-wrapper"
       *ngFor="let addon of addonsFormArray.controls; let i = index"
     >
       <app-game-addon-form
         [formControlName]="i"
         (filesEventEmitter)="updateAddonsSelectedFiles($event, i)"
       ></app-game-addon-form>
-      <button
-        (click)="removeAddonForm(i)"
-      >
-        Remove
-      </button>
+
+      <div class="click-area" (click)="removeAddonForm(i)">
+        <div class="remove-file-icon"></div>
+      </div>
+
     </div>
+    <button
+      class="add-addon-btn"
+      (click)="addAddonForm()"
+    >
+      Add Addon
+    </button>
   </div>
 
   <button (click)="registerForm()">Submit</button>
