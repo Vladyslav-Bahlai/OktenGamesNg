@@ -1,6 +1,10 @@
 <div class="game-info">
   <h1>Game info:</h1>
   <p>id: {{ game?.id }}</p>
+
+  <h3>Title image:</h3>
+  <img [src]="env.imgPath + game?.titleImgUrl" alt="title img">
+
   <p>title: {{ game?.title }}</p>
   <p>amount: {{ game?.amount }}</p>
   <p>price: {{ game?.price }}</p>

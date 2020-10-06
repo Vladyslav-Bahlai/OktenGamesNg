@@ -108,23 +108,30 @@ export class GameFormComponent implements OnInit, OnDestroy {
 
     // after this method title image will be the first elem in selected files array
     this.unshiftTitleImage(this.selectedFiles);
+    console.log(this.selectedFiles);
     // add each selected file to 'files' field in formData
     this.selectedFiles.forEach((imageObj: ImageObj) => {
       formData.append('gameFiles', imageObj.file);
     });
 
-    // this.addonsSelectedFiles.forEach((images: ImageObj[]) => {
-    //   this.unshiftTitleImage(images);
-    //   const addonImagesBlob = new Blob([JSON.stringify(images)], {type: 'multipart/form-data'});
-    //   formData.append('addonsFiles', addonImagesBlob);
-    // });
+    const addonsFilesCounter: number[] = [];
+
+    this.addonsSelectedFiles.forEach((addonImageObjects: ImageObj[]) => {
+      this.unshiftTitleImage(addonImageObjects);
+      const addonFiles: File[] = addonImageObjects.map(imageObj => imageObj.file);
+      addonFiles.forEach(file => {
+        formData.append('addonsFiles', file);
+      });
+      addonsFilesCounter.push(addonFiles.length);
+    });
+    formData.append('addonsFilesCounterJson', JSON.stringify(addonsFilesCounter));
+
+    console.log(this.game);
 
     // it seems that adding JSON objects as blobs to formData is the easiest approach
     // cuz they can be easily casted to Java object on the server
     const blobGame = new Blob([JSON.stringify(this.game)], {type: 'application/json'});
     formData.append('game', blobGame);
-
-    console.log(formData)
 
     return formData;
   }
@@ -132,6 +139,11 @@ export class GameFormComponent implements OnInit, OnDestroy {
   // finds an image where isTitle is true, deletes it from the array and inserts at the beginning
   private unshiftTitleImage(files: ImageObj[]) {
     const titleImage: ImageObj = files.find(img => img.isTitle === true);
+
+    if (titleImage === undefined) {
+      return;
+    }
+
     const titleIndex: number = files.indexOf(titleImage);
     files.splice(titleIndex, 1);
     files.unshift(titleImage);
@@ -165,13 +177,11 @@ export class GameFormComponent implements OnInit, OnDestroy {
   private addAddonForm(): void {
     this.addonsFormArray.push(new FormControl(''));
     this.addonsSelectedFiles.push([]);
-    console.log(this.addonsSelectedFiles);
   }
 
   private removeAddonForm(index: number): void {
     this.addonsFormArray.removeAt(index);
     this.addonsSelectedFiles.splice(index, 1);
-    console.log(this.addonsSelectedFiles);
   }
 
   clearForm() {
