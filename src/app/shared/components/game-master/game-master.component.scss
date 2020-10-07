@@ -1,0 +1,54 @@
+.game-list-wrapper {
+  width: 70%;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  .item-wrapper {
+    flex-basis: 33.33%;
+    box-sizing: border-box;
+    padding: 10px;
+  }
+}
+
+.item-img-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  .item-title-img {
+    width: 100%;
+  }
+}
+
+.item-info-wrapper {
+  background-color: lightgrey;
+  padding: 10px 10px 5px;
+
+  .item-info-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 3rem;
+  }
+}
+.item:hover {
+  transform: scale(1.03);
+}
+
+.platform-text {
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.title-text {
+  font-size: 24px;
+}
+
+.price-text {
+  font-size: 24px;
+}
+
+.df {
+  display: flex;
+}
+

@@ -4,6 +4,7 @@ import {Subject} from 'rxjs';
 import {GameStorageService} from '../../../core/services/game-storage.service';
 import {takeUntil} from 'rxjs/operators';
 import {Router} from '@angular/router';
+import {environment} from "../../../../environments/environment";
 
 @Component({
   selector: 'app-game-master',
@@ -11,7 +12,7 @@ import {Router} from '@angular/router';
   styleUrls: ['./game-master.component.scss']
 })
 export class GameMasterComponent implements OnInit, OnDestroy {
-
+  env = environment;
   gamesList: Game[];
   destroy$ = new Subject();
 

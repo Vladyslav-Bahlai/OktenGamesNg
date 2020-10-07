@@ -1,7 +1,32 @@
 <h1>Games:</h1>
-<div
-  class="game-list"
-  *ngFor="let game of gamesList"
->
-  <a (click)="navigateToGame(game)">{{game.title}}</a>
+
+<div class="game-list-wrapper df">
+  <div
+    class="item-wrapper"
+    *ngFor="let game of gamesList"
+  >
+    <div
+      class="item"
+      (click)="navigateToGame(game)">
+      <div class="item-img-wrapper">
+        <img
+          class="item-title-img"
+          [src]="env.imgPath + game?.titleImgUrl" alt="title img"
+        >
+      </div>
+      <div class="item-info-wrapper">
+        <div class="item-info-header">
+          <span class="title-text">{{game.title}}</span>
+        </div>
+        <div class="item-info-footer">
+          <div class="info-footer-platforms">
+            <span class="platform-text" *ngFor="let platform of game.platforms">{{platform.name}}</span>
+          </div>
+          <div class="info-footer-price">
+            <span class="price-text">{{game.price | currency }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
