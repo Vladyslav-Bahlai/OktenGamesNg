@@ -1,4 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {ImageObj} from "../../../core/models/ImageObj";
 
 @Component({
   selector: 'app-images-uploader',
@@ -7,10 +8,11 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 })
 export class ImagesUploaderComponent implements OnInit {
 
-  private selectedFiles: File[] = [];
+  // changed this array to ImageObj[] in order to add isTitle field to each image
+  private selectedFiles: ImageObj[] = [];
   private imageUrls = [];
   // event emitter is used to pass updated selectedFiles array to parent component
-  @Output() filesEmitter: EventEmitter<File[]> = new EventEmitter<File[]>();
+  @Output() filesEmitter: EventEmitter<ImageObj[]> = new EventEmitter();
 
   constructor() {
   }
@@ -28,7 +30,12 @@ export class ImagesUploaderComponent implements OnInit {
       // when image url is obtained, file is pushed to the selectedFiles
       // and its url is pushed to imageUrls so the indexes are the same for file and url
       reader.onload = () => {
-        this.selectedFiles.push(currentFile);
+        // to make the very first element a title image by default
+        if (this.selectedFiles.length) {
+          this.selectedFiles.push(new ImageObj(currentFile, false));
+        } else {
+          this.selectedFiles.push(new ImageObj(currentFile, true));
+        }
         this.updateFilesEmitter();
         this.imageUrls.push(reader.result);
       };
@@ -49,4 +56,14 @@ export class ImagesUploaderComponent implements OnInit {
     this.filesEmitter.emit(this.selectedFiles);
   }
 
+  onDoubleClick(index: number) {
+    if (this.selectedFiles[index].isTitle === true) {
+      return;
+    }
+
+    this.selectedFiles.forEach(fileObj => {
+      fileObj.isTitle = false;
+    });
+    this.selectedFiles[index].isTitle = true;
+  }
 }

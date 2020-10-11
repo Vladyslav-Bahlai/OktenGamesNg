@@ -7,6 +7,13 @@
     >
   </div>
   <div>
+    Company name:<br>
+    <input
+      formControlName="company"
+      type="text"
+    >
+  </div>
+  <div>
     Price: <br>
     <input
       formControlName="price"
@@ -40,4 +47,6 @@
       formControlName="description"
       type="text" rows="10" cols="40"></textarea>
   </div>
+  <app-images-uploader (filesEmitter)="updateSelectedFiles($event)"></app-images-uploader>
 </form>
+

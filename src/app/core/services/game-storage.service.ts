@@ -1,19 +1,23 @@
 import {Injectable, OnDestroy} from '@angular/core';
-import {Game} from '../models/game';
 import {BehaviorSubject, Subject} from 'rxjs';
 import {GameService} from './game.service';
 import {takeUntil} from 'rxjs/operators';
+import {Game} from "../models/game";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameStorageService implements OnDestroy {
 
-  private games: Game[];
+  games$ = new BehaviorSubject<Game[]>([]);
   private destroy$ = new Subject();
-  games$ = new BehaviorSubject(this.games);
 
-  constructor(private gameService: GameService) {
+  constructor(
+    private gameService: GameService
+  ) { }
+
+  // sends request for all games and updates observable value
+  public saveAllGames(): void {
     this.gameService.getAllGames()
       .pipe(takeUntil(this.destroy$))
       .subscribe((games) => {

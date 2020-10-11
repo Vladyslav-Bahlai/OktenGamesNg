@@ -1,19 +1,17 @@
 <div class="game-info">
   <h1>Game info:</h1>
   <p>id: {{ game?.id }}</p>
+
+  <h3>Title image:</h3>
+  <img [src]="env.imgPath + game?.titleImgUrl" alt="title img">
+
   <p>title: {{ game?.title }}</p>
   <p>amount: {{ game?.amount }}</p>
   <p>price: {{ game?.price }}</p>
   <p>score: {{ game?.score }}</p>
-  <p>imgUrl: {{ game?.imgUrl }}</p>
   <p>description: {{ game?.description }}</p>
   <p>releaseDate: {{ game?.releaseDate }}</p>
   <p>company: {{ game?.company }}</p>
-
-  <!--<h3>screenShotsImgUrl:</h3>-->
-  <!--<div *ngFor="let url of game.screenShotsImgUrl">-->
-    <!--<p>{{ url }}</p>-->
-  <!--</div>-->
 
   <h3>genres:</h3>
   <div *ngFor="let genre of game?.genres">
@@ -23,6 +21,13 @@
   <h3>platforms:</h3>
   <div *ngFor="let platform of game?.platforms">
     <p>{{ platform.name }}</p>
+  </div>
+
+  <div>
+    <h3>photos:</h3>
+    <div *ngFor="let imgUrl of game?.screenShotsImgUrl">
+      <img [src]="env.imgPath + imgUrl" alt="screenShot">
+    </div>
   </div>
 
   <div *ngIf="game?.additionalContent.length > 0">

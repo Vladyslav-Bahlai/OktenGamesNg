@@ -1,7 +1,8 @@
-import {Component, forwardRef, OnDestroy, OnInit} from '@angular/core';
+import {Component, EventEmitter, forwardRef, OnDestroy, OnInit, Output} from '@angular/core';
 import {ControlValueAccessor, FormBuilder, FormGroup, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {takeUntil} from "rxjs/operators";
 import {Subject} from "rxjs";
+import {ImageObj} from "../../../core/models/ImageObj";
 
 @Component({
   selector: 'app-game-addon-form',
@@ -19,6 +20,8 @@ export class GameAddonFormComponent implements OnInit, OnDestroy, ControlValueAc
 
   private reactiveFormGroup: FormGroup;
   private destroy$ = new Subject();
+  private selectedFiles: ImageObj[] = [];
+  @Output() filesEventEmitter: EventEmitter<ImageObj[]> = new EventEmitter();
 
   constructor(
     private formBuilder: FormBuilder
@@ -28,11 +31,11 @@ export class GameAddonFormComponent implements OnInit, OnDestroy, ControlValueAc
   ngOnInit() {
     this.reactiveFormGroup = this.formBuilder.group({
       title: '',
+      company: '',
       price: '',
       score: '',
       releaseDate: '',
       amount: '',
-      imgUrl: '',
       description: '',
     });
   }
@@ -64,4 +67,8 @@ export class GameAddonFormComponent implements OnInit, OnDestroy, ControlValueAc
     this.destroy$.next();
   }
 
+  updateSelectedFiles(images: ImageObj[]) {
+    this.selectedFiles = images;
+    this.filesEventEmitter.emit(this.selectedFiles);
+  }
 }

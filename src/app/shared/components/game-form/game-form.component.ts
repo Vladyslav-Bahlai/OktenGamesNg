@@ -7,6 +7,7 @@ import {Subject} from "rxjs";
 import {GameService} from "../../../core/services/game.service";
 import {Genre} from "../../../core/models/genre";
 import {GameStorageService} from "../../../core/services/game-storage.service";
+import {ImageObj} from "../../../core/models/ImageObj";
 
 @Component({
   selector: 'app-game-form',
@@ -18,7 +19,8 @@ export class GameFormComponent implements OnInit, OnDestroy {
   private reactiveFormGroup: FormGroup;
   private platformsData: Platform[] = [];
   private genresData: Genre[] = [];
-  private selectedFiles: File[] = [];
+  private selectedFiles: ImageObj[] = [];
+  private addonsSelectedFiles: Array<ImageObj[]> = [];
   private destroy$ = new Subject();
 
   constructor(
@@ -104,10 +106,27 @@ export class GameFormComponent implements OnInit, OnDestroy {
       genres: genreList
     });
 
+    // after this method title image will be the first elem in selected files array
+    this.unshiftTitleImage(this.selectedFiles);
+    console.log(this.selectedFiles);
     // add each selected file to 'files' field in formData
-    this.selectedFiles.forEach((file: File) => {
-      formData.append('files', file);
+    this.selectedFiles.forEach((imageObj: ImageObj) => {
+      formData.append('gameFiles', imageObj.file);
     });
+
+    const addonsFilesCounter: number[] = [];
+
+    this.addonsSelectedFiles.forEach((addonImageObjects: ImageObj[]) => {
+      this.unshiftTitleImage(addonImageObjects);
+      const addonFiles: File[] = addonImageObjects.map(imageObj => imageObj.file);
+      addonFiles.forEach(file => {
+        formData.append('addonsFiles', file);
+      });
+      addonsFilesCounter.push(addonFiles.length);
+    });
+    formData.append('addonsFilesCounterJson', JSON.stringify(addonsFilesCounter));
+
+    console.log(this.game);
 
     // it seems that adding JSON objects as blobs to formData is the easiest approach
     // cuz they can be easily casted to Java object on the server
@@ -117,10 +136,19 @@ export class GameFormComponent implements OnInit, OnDestroy {
     return formData;
   }
 
-  // gets updated selected files from child component and rewrites selectedFiles array
-  private updateSelectedFiles(files: File[]): void {
-    this.selectedFiles = files;
+  // finds an image where isTitle is true, deletes it from the array and inserts at the beginning
+  private unshiftTitleImage(files: ImageObj[]) {
+    const titleImage: ImageObj = files.find(img => img.isTitle === true);
+
+    if (titleImage === undefined) {
+      return;
+    }
+
+    const titleIndex: number = files.indexOf(titleImage);
+    files.splice(titleIndex, 1);
+    files.unshift(titleImage);
   }
+
 
   // maps through list of boolean values in form platforms and adds platform object
   // to platformsList if this platform was checked in form
@@ -148,14 +176,25 @@ export class GameFormComponent implements OnInit, OnDestroy {
 
   private addAddonForm(): void {
     this.addonsFormArray.push(new FormControl(''));
+    this.addonsSelectedFiles.push([]);
   }
 
   private removeAddonForm(index: number): void {
     this.addonsFormArray.removeAt(index);
+    this.addonsSelectedFiles.splice(index, 1);
   }
 
   clearForm() {
     this.reactiveFormGroup.reset();
   }
 
+  // gets updated selected files from child component and rewrites selectedFiles array
+  private updateSelectedFiles(images: ImageObj[]): void {
+    this.selectedFiles = images;
+  }
+
+  updateAddonsSelectedFiles(images: ImageObj[], addonIndex: number) {
+    this.addonsSelectedFiles[addonIndex] = images;
+    console.log(this.addonsSelectedFiles);
+  }
 }
