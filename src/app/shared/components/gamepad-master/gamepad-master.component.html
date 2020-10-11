@@ -3,4 +3,48 @@
   <a (click)="navigateToGamepad(gamepad)">{{gamepad.title}}</a>
 </div>
 
+<form [formGroup]="reactiveFormGroup">
+  <div>
+    Gamepad title: <br>
+    <input
+      formControlName="title"
+      type="text"
+    >
+  </div>
+  <div>
+    Min Price: <br>
+    <input
+      formControlName="minPrice"
+      type="number"
+    >
+  </div>
+  <div>
+    Max Price: <br>
+    <input
+      formControlName="maxPrice"
+      type="number"
+    >
+  </div>
+  <div>
+    Amount: <br>
+    <input
+      formControlName="amount"
+      type="number"
+    >
+  </div>
+  <div>
+    <label>Color:</label> <br>
+    <div
+      formArrayName="colors"
+      *ngFor="let color of colorsFormArray.controls; let i = index"
+    >
+      <input
+        type="checkbox"
+        [formControlName]="i"
+      >
+      {{colorsData[i].name}}
+    </div>
+  </div>
 
+  <button (click)="search()">Search</button>
+</form>

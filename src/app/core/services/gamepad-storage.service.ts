@@ -1,5 +1,5 @@
 import {Injectable, OnDestroy} from '@angular/core';
-import {BehaviorSubject, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {GamepadService} from './gamepad.service';
 import {takeUntil} from 'rxjs/operators';
 import {Gamepad} from '../models/gamepad';
@@ -23,5 +23,11 @@ export class GamepadStorageService implements OnDestroy {
 
   ngOnDestroy(): void {
     this.destroy$.next();
+  }
+
+  filterGamepad(gamepads: Gamepad[], gamepad): Gamepad[] {
+    console.log(gamepad);
+    return gamepads.filter(value => value.title.toLowerCase().includes(gamepad.title.toLowerCase()) &&
+      (value.price >= gamepad.minPrice && value.price <= gamepad.maxPrice) && value.colors === gamepad.colors);
   }
 }
