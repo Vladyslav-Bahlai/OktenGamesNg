@@ -2,3 +2,52 @@
 <div *ngFor="let device of devicesList">
   <a (click)="navigateToDevice(device)">{{device.title}}</a>
 </div>
+
+<form [formGroup]="reactiveFormGroup">
+  <div>
+    Device title: <br>
+    <input
+      formControlName="title"
+      type="text"
+    >
+  </div>
+  <div>
+    MinPrice: <br>
+    <input
+      formControlName="minPrice"
+      type="number"
+      [value]="0"
+    >
+  </div>
+  <div>
+    MaxPrice: <br>
+    <input
+      formControlName="maxPrice"
+      type="number"
+      [value]="getmaxPrice()"
+    >
+  </div>
+<!--  <div>-->
+<!--    Gamepads: <br>-->
+<!--    <input-->
+<!--      formControlName="gamepads"-->
+<!--      type="number"-->
+<!--    >-->
+<!--  </div>-->
+  <div>
+    <label>Condition State:</label> <br>
+    <div
+      formArrayName="conditionStates"
+      *ngFor="let conditionState of conditionStatesFormArray.controls; let i = index"
+    >
+      <input
+        type="checkbox"
+        [formControlName]="i"
+      >
+      {{conditionStatesData[i].name}}
+    </div>
+  </div>
+
+
+  <button (click)="search()">Search</button>
+</form>

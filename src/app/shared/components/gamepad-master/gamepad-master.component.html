@@ -19,18 +19,12 @@
     >
   </div>
   <div>
-    Max Price: <br>
-    <input
-      formControlName="maxPrice"
-      type="number"
-    >
-  </div>
-  <div>
-    Amount: <br>
-    <input
-      formControlName="amount"
-      type="number"
-    >
+  Max Price: <br>
+  <input
+    formControlName="maxPrice"
+    type="number"
+    [value]="getmaxPrice()"
+  >
   </div>
   <div>
     <label>Color:</label> <br>

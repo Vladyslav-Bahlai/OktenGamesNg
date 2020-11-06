@@ -30,4 +30,32 @@ export class GameStorageService implements OnDestroy {
     this.destroy$.next();
   }
 
+  comparePlatforms(game1, game2): boolean {
+    for (const platform1 of game1.platforms) {
+      for (const platform2 of game2.platforms) {
+        if (platform1.id === platform2.id) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+  compareGenres(game1, game2): boolean {
+    for (const genre1 of game1.platforms) {
+      for (const genre2 of game2.platforms) {
+        if (genre1.id === genre2.id) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  filterGames(games: Game[], game): Game[] {
+    console.log(game);
+    return games.filter(value => (value.price >= game.minPrice && value.price <= game.maxPrice) &&
+    this.comparePlatforms(value, game)
+    // this.compareGenres(value, game)
+    );
+  }
 }

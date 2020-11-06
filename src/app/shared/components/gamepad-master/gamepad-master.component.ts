@@ -4,7 +4,7 @@ import {GamepadStorageService} from '../../../core/services/gamepad-storage.serv
 import {Router} from '@angular/router';
 import {takeUntil} from 'rxjs/operators';
 import {Gamepad} from '../../../core/models/gamepad';
-import {FormArray, FormBuilder, FormControl, FormGroup, NgModel} from '@angular/forms';
+import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {GamepadService} from '../../../core/services/gamepad.service';
 import {Color} from '../../../core/models/color';
 
@@ -17,9 +17,16 @@ import {Color} from '../../../core/models/color';
 export class GamepadMasterComponent implements OnInit, OnDestroy {
   gamepadsList: Gamepad[];
   destroy$ = new Subject();
-  gamepad: Gamepad;
+  gamepad: {
+    id: number,
+    title: string,
+    minPrice: number,
+    maxPrice: number,
+    colors: Color[]
+  };
   private reactiveFormGroup: FormGroup;
   private colorsData: Color[] = [];
+  private maxPrice = 0;
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -45,6 +52,7 @@ export class GamepadMasterComponent implements OnInit, OnDestroy {
         this.colorsData = colors;
         this.addColorsToForm();
       });
+    console.log(this.gamepadsList);
     this.createForm();
   }
 
@@ -56,12 +64,18 @@ export class GamepadMasterComponent implements OnInit, OnDestroy {
     this.destroy$.next();
   }
 
+  getmaxPrice(): number {
+    this.gamepadsList.forEach(gamepad => {
+      if (gamepad.price > this.maxPrice) {this.maxPrice = gamepad.price; }
+    });
+    return this.maxPrice;
+  }
+
   private createForm(): void {
     this.reactiveFormGroup = this.formBuilder.group({
       title: '',
-      minPrice: '',
+      minPrice: 0,
       maxPrice: '',
-      amount: '',
       colors: new FormArray([]),
     });
   }
@@ -71,9 +85,6 @@ export class GamepadMasterComponent implements OnInit, OnDestroy {
       .map((value, i) => value ? Object.assign(new Color(), this.colorsData[i]) : null)
       .filter(v => v !== null);
     return colorsList;
-    //   .map((value, i) => value ? Object.assign(new Color(), this.colorsData[i]) : null)
-    //   .filter(v => v !== null);
-    // return colorsList;
   }
 
   protected addColorsToForm() {
@@ -82,15 +93,16 @@ export class GamepadMasterComponent implements OnInit, OnDestroy {
 
   search(): void {
     const colorsList = this.getFormColors();
-    this.gamepad = Object.assign(new Gamepad(), {
+    this.gamepad = Object.assign(new Object(), {
       ...this.reactiveFormGroup.value,
       colors: colorsList
     });
-
+    if (typeof this.gamepad.maxPrice === 'string') {
+      this.gamepad.maxPrice = this.getmaxPrice();
+    }
     this.gamepadStorageService.gamepads$.subscribe(values => {
       this.gamepadsList = this.gamepadStorageService.filterGamepad(values, this.gamepad);
-      console.log(this.gamepadsList);
-      console.log(this.gamepad.colors);
+      console.log(this.gamepad);
     });
   }
 }

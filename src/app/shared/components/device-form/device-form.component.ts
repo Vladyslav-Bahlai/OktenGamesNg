@@ -43,7 +43,7 @@ export class DeviceFormComponent implements OnInit, OnDestroy {
     const conditionStatesList = this.getFormConditionStates();
     this.device = Object.assign(new Device(), {
       ...this.reactiveFormGroup.value,
-      conditionStates: conditionStatesList
+      conditionStates: conditionStatesList,
     });
     console.log(this.device);
     this.deviceService.addDevice(this.device)

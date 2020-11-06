@@ -19,6 +19,7 @@ export class DeviceComponent implements OnInit, OnDestroy {
 
   constructor(
     private deviceStorageService: DeviceStorageService,
+    private deviceService: DeviceService,
     private route: ActivatedRoute
   ) {
 
@@ -28,7 +29,7 @@ export class DeviceComponent implements OnInit, OnDestroy {
     this.route.params
       .pipe(takeUntil(this.destroy$))
       .subscribe((params) => {
-        this.device = this.getDeviceFromStorageById(+params.id);
+        this.getDeviceFromStorageById(+params.id);
         console.log(this.device);
       });
   }
@@ -37,9 +38,17 @@ export class DeviceComponent implements OnInit, OnDestroy {
     this.destroy$.next();
   }
 
-  private getDeviceFromStorageById(id: number): Device {
-    const deviceById = this.deviceStorageService.devices$.value.find(device => device.id === id);
-    return deviceById as Device;
+  private getDeviceFromStorageById(id: number) {
+    this.device = this.deviceStorageService.devices$.getValue().find(device => device.id === id);
+
+    if (this.device === undefined) {
+      this.deviceService.getDeviceById(id.toString())
+        .pipe(takeUntil(this.destroy$))
+        .subscribe(data => {
+          console.log(data);
+          this.device = data;
+        });
+    }
   }
 
 }

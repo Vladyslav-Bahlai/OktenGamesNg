@@ -30,3 +30,57 @@
     </div>
   </div>
 </div>
+
+<form [formGroup]="reactiveFormGroup">
+  <div>
+    Game title: <br>
+    <input
+      formControlName="title"
+      type="text"
+    >
+  </div>
+  <div>
+    MinPrice: <br>
+    <input
+      formControlName="minPrice"
+      type="number"
+      [value]="0"
+    >
+  </div>
+  <div>
+    MaxPrice: <br>
+    <input
+      formControlName="maxPrice"
+      type="number"
+      [value]="getmaxPrice()"
+    >
+  </div>
+  <div>
+    <label>Platform:</label> <br>
+    <div
+      formArrayName="platforms"
+      *ngFor="let platform of platformsFormArray.controls; let i = index"
+    >
+      <input
+        type="checkbox"
+        [formControlName]="i"
+      >
+      {{platformsData[i].name}}
+    </div>
+  </div>
+<!--  <div>-->
+<!--    <label>Genre:</label> <br>-->
+<!--    <div-->
+<!--      formArrayName="genres"-->
+<!--      *ngFor="let genre of genresFormArray.controls; let i = index"-->
+<!--    >-->
+<!--      <input-->
+<!--        type="checkbox"-->
+<!--        [formControlName]="i"-->
+<!--      >-->
+<!--      {{genresData[i].name}}-->
+<!--    </div>-->
+<!--  </div>-->
+
+  <button (click)="search()">Search</button>
+</form>
